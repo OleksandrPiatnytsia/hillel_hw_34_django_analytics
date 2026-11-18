@@ -1,0 +1,25 @@
+# Packages of the Analytics service. The same versions as in the bookstore
+# (../hillel_hw_33_django_ci_cd_deploy), so both projects behave the same.
+asgiref==3.13.0
+Django==6.1.3
+sqlparse==0.6.1
+psycopg[binary]==3.3.8
+# Pool of database connections (DATABASES OPTIONS "pool" in config/settings/base.py)
+psycopg-pool==3.3.3
+python-dotenv==1.2.4
+# Cache, sessions and the Celery broker
+redis==8.1.0
+# gunicorn as the process manager + uvicorn workers = an ASGI server (gunicorn.conf.py)
+gunicorn==26.2.0
+uvicorn==0.54.0
+uvicorn-worker==0.4.0
+# Static files served by Django itself where there is no nginx (Railway)
+whitenoise==6.12.0
+# Background tasks (config/celery.py); [redis]: the Redis broker transport
+celery[redis]==5.7.0
+# Error tracking (sentry.io): Django, Celery and logging integrations included
+sentry-sdk==2.74.0
+# REST API: the reports for the bookstore (stage 4), JWT tokens, Swagger
+djangorestframework==3.18.3
+djangorestframework-simplejwt==5.5.1
+drf-spectacular==0.30.0

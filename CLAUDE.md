@@ -55,8 +55,8 @@ Bookstore (A)                                   Analytics (B)
 
 Two repositories (the user decided against a monorepo):
 - RabbitMQ lives in A's `docker-compose.yml` (A is the producer and must run without B).
-  B's compose joins A's Docker network as an external network. Proposal, confirm at stage 1.
-- B has its own PostgreSQL and (proposal) its own Redis in its compose.
+  B's compose joins A's Docker network as an external network. Confirmed by the user 2026-11-18.
+- B has its own PostgreSQL and its own Redis in its compose (confirmed 2026-11-18).
 - Each repository has its own GitHub Actions CI. Railway: B and RabbitMQ go into the same
   Railway project as A (internal network); check the RabbitMQ cost first.
 - Each README links the other repository and shows the shared architecture diagram.
@@ -103,7 +103,12 @@ Interface: Django templates + Bootstrap 5 + **Chart.js** (CDN, no frontend build
 
 0. Repositories (done: this one created).
 1. B skeleton: settings split, custom user, groups, Docker Compose (web, db, redis, celery,
-   nginx), CI, i18n, Bootstrap base template, Sentry.
+   nginx), CI, i18n, Bootstrap base template, Sentry. Code written 2026-11-18. Decisions:
+   groups are made by a post_migrate receiver (users/groups.py, not a data migration);
+   permissions `users.view_analytics` (Analysts) and `users.use_reports_api` (Services) on
+   User.Meta; Swagger is public, the endpoints need JWT; no Flower; CI = lint + test +
+   Docker Hub push from main (coverage badge at stage 6); the external network of A is added
+   at stage 2 together with the consumer.
 2. RabbitMQ + B consumer (event journal, idempotency, dead-letter queue).
 3. A: outbox + Celery publisher with publisher confirms (in A's repository).
 4. B: aggregation, reports, dashboard, exports, REST + Swagger.
@@ -132,8 +137,8 @@ Present the detailed plan of a stage to the user before coding it.
 - A's daily report: `orders/reports.py`, beat entry "daily-sales-report" at 06:00 (orders,
   top books, low stock CSV attachments to the Managers group).
 - A's ports on the Mac: nginx :8000, runserver :8001, PostgreSQL :5432, Redis :6379,
-  Flower :5555. B must use other host ports (proposal: nginx :8010, runserver :8011,
-  PostgreSQL :5433, Redis :6380).
+  Flower :5555. B uses other host ports (confirmed): nginx :8010, runserver :8011,
+  PostgreSQL :5433, Redis :6380.
 
 ## Conventions (same as in the bookstore)
 

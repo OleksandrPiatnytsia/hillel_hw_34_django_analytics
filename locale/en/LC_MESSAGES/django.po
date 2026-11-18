@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Analytics\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-18 16:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Analytics\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: config/settings/base.py:258
+msgid "Ukrainian"
+msgstr ""
+
+#: config/settings/base.py:259
+msgid "English"
+msgstr ""
+
+#: reports/apps.py:8
+msgid "Reports"
+msgstr ""
+
+#: reports/templates/reports/dashboard.html:4
+#: reports/templates/reports/dashboard.html:7
+#: templates/includes/navbar.html:16
+msgid "Dashboard"
+msgstr ""
+
+#: reports/templates/reports/dashboard.html:14
+msgid "No data yet"
+msgstr ""
+
+#: reports/templates/reports/dashboard.html:16
+msgid ""
+"Sales figures will appear here once the bookstore starts sending its order "
+"events."
+msgstr ""
+
+#: templates/403.html:9 templates/403.html:14
+msgid "Access denied"
+msgstr ""
+
+#: templates/403.html:15
+msgid ""
+"You don't have permission to open this page. Ask the administrator to add "
+"you to the Analysts group."
+msgstr ""
+
+#: templates/403.html:16 templates/404.html:16 templates/500.html:42
+msgid "Back to the dashboard"
+msgstr ""
+
+#: templates/404.html:9 templates/404.html:14
+msgid "Page not found"
+msgstr ""
+
+#: templates/404.html:15
+msgid "The page doesn't exist or isn't available to you."
+msgstr ""
+
+#: templates/500.html:18
+msgid "Server error"
+msgstr ""
+
+#: templates/500.html:37
+msgid "Something went wrong on our side"
+msgstr ""
+
+#: templates/500.html:39
+msgid "We already know about it. Please try again in a few minutes."
+msgstr ""
+
+#: templates/base.html:9 templates/includes/navbar.html:4
+msgid "Analytics"
+msgstr ""
+
+#: templates/base.html:9 templates/base.html:32
+msgid "Bookstore analytics"
+msgstr ""
+
+#: templates/base.html:35
+msgid "Bookstore"
+msgstr ""
+
+#: templates/base.html:37
+msgid "Hillel Django homework"
+msgstr ""
+
+#: templates/base.html:39
+msgid "Version of the service"
+msgstr ""
+
+#: templates/base.html:41
+msgid "Deployed commit"
+msgstr ""
+
+#: templates/includes/messages.html:8
+msgid "Close"
+msgstr ""
+
+#: templates/includes/navbar.html:6
+msgid "Toggle navigation"
+msgstr ""
+
+#: templates/includes/navbar.html:20
+msgid "Admin"
+msgstr ""
+
+#: templates/includes/navbar.html:23
+msgid "API"
+msgstr ""
+
+#: templates/includes/navbar.html:35
+msgid "Language"
+msgstr ""
+
+#: templates/includes/navbar.html:55
+msgid "Log out"
+msgstr ""
+
+#: templates/includes/navbar.html:59 users/templates/users/login.html:4
+#: users/templates/users/login.html:11 users/templates/users/login.html:39
+msgid "Log in"
+msgstr ""
+
+#: users/apps.py:9
+msgid "Users"
+msgstr ""
+
+#: users/models.py:18
+msgid "user"
+msgstr ""
+
+#: users/models.py:19
+msgid "users"
+msgstr ""
+
+#: users/models.py:24
+msgid "Can view the analytics dashboard and reports"
+msgstr ""
+
+#: users/models.py:25
+msgid "Can read the reports through the REST API"
+msgstr ""
+
+#: users/templates/users/login.html:43
+msgid "Accounts are created by the administrator."
+msgstr ""
+
+#: users/views.py:16
+msgid "You are logged in."
+msgstr ""

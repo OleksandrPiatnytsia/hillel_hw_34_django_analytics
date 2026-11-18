@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{# {% load %} is per template: extends does not bring the tags of base.html #}
+{% load i18n %}
+
+{% comment %}
+Rendered by django.views.defaults.permission_denied, for example when PermissionRequiredMixin rejects a logged-in user (AnalyticsAccessMixin in reports/views.py).
+{% endcomment %}
+
+{% block title %}{% translate "Access denied" %}{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+  <div class="display-1">🔒</div>
+  <h1 class="h3 mt-3">{% translate "Access denied" %}</h1>
+  <p class="text-body-secondary">{% translate "You don't have permission to open this page. Ask the administrator to add you to the Analysts group." %}</p>
+  <a class="btn btn-primary" href="{% url 'reports:dashboard' %}">{% translate "Back to the dashboard" %}</a>
+</div>
+{% endblock %}

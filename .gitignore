@@ -52,8 +52,8 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Translations
-*.mo
+# Translations: the compiled *.mo files ARE committed: the Docker image has
+# no gettext to run compilemessages (locale/*/LC_MESSAGES/django.mo)
 *.pot
 
 # Django stuff:
@@ -221,3 +221,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Django: written at run time (collectstatic, the log files)
+staticfiles/
+logs/
+media/

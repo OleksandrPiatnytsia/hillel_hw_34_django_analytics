@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Dashboard" %}{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">{% translate "Dashboard" %}</h1>
+
+{# A placeholder until the events arrive (stages 2-4): the KPI tiles and #}
+{# the Chart.js charts take this place #}
+<div class="card shadow-sm">
+  <div class="card-body text-center py-5">
+    <div class="display-4 mb-3">📈</div>
+    <h2 class="h5">{% translate "No data yet" %}</h2>
+    <p class="text-body-secondary mb-0">
+      {% translate "Sales figures will appear here once the bookstore starts sending its order events." %}
+    </p>
+  </div>
+</div>
+{% endblock %}

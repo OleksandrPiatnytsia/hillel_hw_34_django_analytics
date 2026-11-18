@@ -1,0 +1,53 @@
+{% load static i18n %}<!DOCTYPE html>
+{# The language of this response (LocaleMiddleware): screen readers and #}
+{# the browser's "Translate this page" rely on lang #}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% translate "Analytics" %}{% endblock %} · {% translate "Bookstore analytics" %}</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+  {# Bootstrap from a CDN: no frontend build. integrity = the hash of the #}
+  {# file: a changed file on the CDN is refused by the browser #}
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous">
+  {# Our styles after Bootstrap, so they can override it #}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="bg-body-tertiary d-flex flex-column min-vh-100">
+
+  {% include "includes/navbar.html" %}
+
+  <main class="container py-4 flex-grow-1">
+    {% include "includes/messages.html" %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-top py-3 bg-body d-print-none">
+    <div class="container small text-body-secondary">
+      {% translate "Bookstore analytics" %} ·
+      {# The other half of the homework: the bookstore that sends the events #}
+      <a class="link-secondary" href="{{ bookstore_repository_url }}"
+         target="_blank" rel="noopener">{% translate "Bookstore" %}</a> ·
+      <a class="link-secondary" href="https://ithillel.ua/courses/python-pro"
+         target="_blank" rel="noopener">{% translate "Hillel Django homework" %}</a>
+      {# The version and the deployed commit (config/version.py) #}
+      · <span title="{% translate 'Version of the service' %}">v{{ app_version }}</span>
+      {% if app_commit %}
+        (<a class="link-secondary" href="{{ app_commit_url }}" title="{% translate 'Deployed commit' %}"
+            target="_blank" rel="noopener">{{ app_commit|slice:":7" }}</a>)
+      {% endif %}
+    </div>
+  </footer>
+
+  {# JS bundle (with Popper): the navbar toggler, dropdowns, alert close buttons #}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+          crossorigin="anonymous"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

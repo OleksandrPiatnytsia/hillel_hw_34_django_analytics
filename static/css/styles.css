@@ -1,0 +1,15 @@
+/* Our styles on top of Bootstrap 5 (loaded after it in base.html).
+   Kept small: Bootstrap's utility classes do most of the work. */
+
+/* Print view of the reports (stage 4): no shadows, no background colour,
+   the navbar and the footer are hidden with Bootstrap's d-print-none */
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border-color: #dee2e6 !important;
+  }
+}

@@ -1,0 +1,64 @@
+{% load i18n %}
+<nav class="navbar navbar-expand-lg bg-dark border-bottom d-print-none" data-bs-theme="dark">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="{% url 'reports:dashboard' %}">📊 {% translate "Analytics" %}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar" aria-expanded="false" aria-label="{% translate 'Toggle navigation' %}">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto">
+        {% if perms.users.view_analytics %}
+          {# The report pages join this menu at stage 4 #}
+          <li class="nav-item">
+            <a class="nav-link{% if request.resolver_match.url_name == 'dashboard' %} active" aria-current="page{% endif %}"
+               href="{% url 'reports:dashboard' %}">{% translate "Dashboard" %}</a>
+          </li>
+        {% endif %}
+        {% if user.is_staff %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">{% translate "Admin" %}</a></li>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'api:docs' %}">{% translate "API" %}</a></li>
+        {% endif %}
+      </ul>
+
+      <ul class="navbar-nav align-items-lg-center">
+        {# Language switcher: a POST form (it changes a cookie). Every button #}
+        {# sends language=<code>; Django's set_language returns to "next". #}
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        <li class="nav-item dropdown me-lg-2">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false" aria-label="{% translate 'Language' %}">🌐 {{ LANGUAGE_CODE|upper }}</a>
+          <form method="post" action="{% url 'set_language' %}" class="dropdown-menu dropdown-menu-end">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            {% for language in languages %}
+              {# name_local: every language in its own name (Українська, English) #}
+              <button type="submit" name="language" value="{{ language.code }}"
+                      class="dropdown-item{% if language.code == LANGUAGE_CODE %} active{% endif %}"
+                      {% if language.code == LANGUAGE_CODE %}aria-current="true"{% endif %}
+                      lang="{{ language.code }}">{{ language.name_local|capfirst }}</button>
+            {% endfor %}
+          </form>
+        </li>
+
+        {% if user.is_authenticated %}
+          <li class="nav-item"><span class="navbar-text me-2">👤 {{ user.username }}</span></li>
+          <li class="nav-item">
+            {# Logout is POST only (Django 5+), so a form, not a link #}
+            <form method="post" action="{% url 'users:logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-light btn-sm">{% translate "Log out" %}</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">{% translate "Log in" %}</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
