@@ -67,3 +67,20 @@ def user_client(user):
     client = Client()
     client.force_login(user)
     return client
+
+
+@pytest.fixture
+def purged_queues():
+    """Empty queues of kombu's memory transport (memory:// in the tests).
+
+    The memory transport keeps its queues in the process for the whole
+    test run: a message left by one test would be read by the next one.
+    """
+    from events.topology import connect, dead_letter_queue, declare_topology, events_queue
+
+    with connect() as connection:
+        channel = connection.default_channel
+        declare_topology(channel)
+        for queue in (events_queue(), dead_letter_queue()):
+            queue(channel).purge()
+    yield

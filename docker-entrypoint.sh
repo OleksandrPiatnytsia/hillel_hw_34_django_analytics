@@ -14,11 +14,13 @@
 # by gunicorn on a database with a wrong schema
 set -e
 
-# celery worker / celery beat: no migrate, no collectstatic. Several
+# Only the web server (gunicorn) runs migrate + collectstatic. Several
 # containers running migrate at the same moment could apply the same
-# migration twice ("relation already exists"); web does it alone, and the
-# Celery services start only after web is healthy (depends_on).
-if [ "$1" != "celery" ]; then
+# migration twice ("relation already exists"); celery, celery-beat and the
+# consumer start only after web is healthy (depends_on). One-off commands
+# (docker compose run web python manage.py ...) skip them too: they work
+# with the database web has already migrated.
+if [ "$1" = "gunicorn" ]; then
     echo "Applying database migrations..."
     # --noinput: never ask questions (nobody can answer them in a container)
     python manage.py migrate --noinput

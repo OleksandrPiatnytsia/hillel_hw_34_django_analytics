@@ -109,7 +109,15 @@ Interface: Django templates + Bootstrap 5 + **Chart.js** (CDN, no frontend build
    User.Meta; Swagger is public, the endpoints need JWT; no Flower; CI = lint + test +
    Docker Hub push from main (coverage badge at stage 6); the external network of A is added
    at stage 2 together with the consumer.
-2. RabbitMQ + B consumer (event journal, idempotency, dead-letter queue).
+2. RabbitMQ + B consumer (event journal, idempotency, dead-letter queue). Code written
+   2026-11-18: contract in docs/events.md (version 1, full order snapshot in every event);
+   apps events / catalog / sales (facts stored already at stage 2); kombu ConsumerMixin
+   (events/consumer.py), quorum queue with x-delivery-limit 5, classic dead letter queue,
+   database outage = wait and retry the same message; commands consume_events,
+   publish_test_event, replay_dead_letters; compose service `consumer` joins external
+   network bookstore_net; entrypoint runs migrate only for gunicorn. CUSTOMER_KEY_SALT is
+   known only to A. A's part (rabbitmq service + network name bookstore_net) is a separate
+   task in A's session.
 3. A: outbox + Celery publisher with publisher confirms (in A's repository).
 4. B: aggregation, reports, dashboard, exports, REST + Swagger.
 5. A: analytics page via B's REST + backfill; integration tests on both sides.

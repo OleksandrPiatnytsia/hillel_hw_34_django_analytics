@@ -9,10 +9,14 @@
 #   docker compose logs -f celery celery-beat   background tasks and the schedule
 #   docker compose down            stop and remove the containers (volumes stay)
 #
-# Analytics runs on its own: its own database and Redis, other host ports
-# than the bookstore (8000 / 5432 / 6379 there), so both can run together.
-# The connection to the bookstore's RabbitMQ (an external network) is added
-# at stage 2, together with the consumer of the events.
+# + the consumer of the bookstore events (consumer), reading RabbitMQ.
+#
+# Analytics has its own database and Redis, other host ports than the
+# bookstore (8000 / 5432 / 6379 there), so both can run together.
+# RabbitMQ lives in the bookstore's docker compose: START THE BOOKSTORE
+# FIRST. Its network "bookstore_net" must exist before `docker compose up`
+# here, otherwise compose stops with "network bookstore_net declared as
+# external, but could not be found".
 #
 # Variables like ${POSTGRES_DB} are taken from the .env file next to this file.
 
@@ -29,10 +33,18 @@ x-django: &django
     # "environment" wins over "env_file": in .env the hosts are "localhost"
     # with the Mac ports (for runserver); inside the Docker network the
     # services are reached by name, on their own ports
-    POSTGRES_HOST: db
+    # analytics-db / analytics-redis, not db / redis: the consumer is also
+    # in the bookstore's network, which has its OWN "db" and "redis", and
+    # Docker's DNS may answer with the bookstore's container for a short
+    # name. The aliases below exist only here, so they are never ambiguous.
+    POSTGRES_HOST: analytics-db
     POSTGRES_PORT: "5432"
-    REDIS_URL: redis://redis:6379
+    REDIS_URL: redis://analytics-redis:6379
     CELERY_BROKER_URL: ""
+    # RabbitMQ of the bookstore, by its service name in bookstore_net;
+    # the login is RABBITMQ_USER / RABBITMQ_PASSWORD from .env
+    RABBITMQ_HOST: rabbitmq
+    RABBITMQ_PORT: "5672"
     # http://localhost:8010 has no certificate: no HTTPS redirect and no
     # secure-only cookies (otherwise no login is possible). Railway: True.
     DJANGO_HTTPS: "False"
@@ -52,6 +64,10 @@ services:
       # Ukrainian sorting rules (ICU): book titles sort as people expect
       # (А, Б, ... Ґ, ... І), not by Unicode code points. First start only.
       POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=uk-UA"
+    networks:
+      default:
+        # The name the Django services use (see POSTGRES_HOST above)
+        aliases: [analytics-db]
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -72,6 +88,10 @@ services:
     # other one. No volume: the cache may be lost; sessions are in
     # PostgreSQL too (cached_db), and the queue is refilled by beat.
     image: redis:8-alpine
+    networks:
+      default:
+        # The name the Django services use (see REDIS_URL above)
+        aliases: [analytics-redis]
     ports:
       # 6380 on the Mac: 6379 belongs to the bookstore's Redis
       - "6380:6379"
@@ -163,6 +183,42 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+
+  consumer:
+    # Reads the events from RabbitMQ and writes them to the database
+    # (python manage.py consume_events, events/consumer.py). One process:
+    # the events of an order are applied in the order they come.
+    <<: *django
+    command: ["python", "manage.py", "consume_events"]
+    networks:
+      # Its own network (db, redis) + the bookstore's (rabbitmq)
+      - default
+      - bookstore
+    healthcheck:
+      # The consumer touches this file about once a second while it is
+      # connected (and while it waits for the database). Older than 60 s =
+      # hung or without RabbitMQ.
+      test:
+        - "CMD"
+        - "python"
+        - "-c"
+        - "import os, sys, time; sys.exit(time.time() - os.path.getmtime('/tmp/analytics-consumer-alive') > 60)"
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      # web healthy = the migrations are applied
+      web:
+        condition: service_healthy
+
+networks:
+  # The bookstore's network (its docker-compose.yml: networks: default:
+  # name: bookstore_net). external: created and removed by the bookstore,
+  # this compose only joins it.
+  bookstore:
+    name: bookstore_net
+    external: true
 
 volumes:
   # A fixed name: without it compose adds the folder name as a prefix.

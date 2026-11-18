@@ -11,7 +11,7 @@ separate POSTGRES_* variables, the ones the postgres Docker image reads too.
 """
 
 import os
-from urllib.parse import parse_qsl, unquote, urlsplit, urlunsplit
+from urllib.parse import parse_qsl, quote, unquote, urlsplit, urlunsplit
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -80,3 +80,21 @@ def redis_url(url, database):
     sessions (database 0) and the Celery queue (database 1).
     """
     return urlunsplit(urlsplit(url)._replace(path=f"/{database}"))
+
+
+def rabbitmq_url():
+    """The AMQP address of RabbitMQ: RABBITMQ_URL if it is set (Railway),
+    otherwise built from RABBITMQ_HOST / PORT / USER / PASSWORD (.env, docker
+    compose), the same way as the database.
+
+    quote(): a "@" or "/" in the password would break the URL otherwise.
+    The last "/" is the virtual host "/" (the default one of RabbitMQ).
+    """
+    url = os.getenv("RABBITMQ_URL")
+    if url:
+        return url
+    user = quote(os.getenv("RABBITMQ_USER", "guest"), safe="")
+    password = quote(os.getenv("RABBITMQ_PASSWORD", "guest"), safe="")
+    host = os.getenv("RABBITMQ_HOST", "localhost")
+    port = os.getenv("RABBITMQ_PORT", "5672")
+    return f"amqp://{user}:{password}@{host}:{port}//"

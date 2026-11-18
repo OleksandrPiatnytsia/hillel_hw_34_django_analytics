@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 16:20+0000\n"
+"POT-Creation-Date: 2026-11-18 18:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: English\n"
@@ -18,12 +18,124 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: config/settings/base.py:258
+#: catalog/apps.py:8
+msgid "Catalog"
+msgstr ""
+
+#: catalog/models.py:16 catalog/models.py:29 sales/models.py:31
+msgid "id in the bookstore"
+msgstr ""
+
+#: catalog/models.py:17
+msgid "name"
+msgstr ""
+
+#: catalog/models.py:20
+msgid "category"
+msgstr ""
+
+#: catalog/models.py:21 catalog/models.py:38
+msgid "categories"
+msgstr ""
+
+#: catalog/models.py:30
+msgid "title"
+msgstr ""
+
+#: catalog/models.py:33
+msgid "author"
+msgstr ""
+
+#: catalog/models.py:34
+msgid "publisher"
+msgstr ""
+
+#: catalog/models.py:36
+msgid "language"
+msgstr ""
+
+#: catalog/models.py:41
+msgid "updated at"
+msgstr ""
+
+#: catalog/models.py:44 sales/models.py:72
+msgid "book"
+msgstr ""
+
+#: catalog/models.py:45
+msgid "books"
+msgstr ""
+
+#: config/settings/base.py:284
 msgid "Ukrainian"
 msgstr ""
 
-#: config/settings/base.py:259
+#: config/settings/base.py:285
 msgid "English"
+msgstr ""
+
+#: events/apps.py:8
+msgid "Events"
+msgstr ""
+
+#: events/models.py:11
+msgid "Order created"
+msgstr ""
+
+#: events/models.py:12
+msgid "Order paid"
+msgstr ""
+
+#: events/models.py:13
+msgid "Order cancelled"
+msgstr ""
+
+#: events/models.py:29
+msgid "Processed"
+msgstr ""
+
+#: events/models.py:30
+msgid "Failed"
+msgstr ""
+
+#: events/models.py:32
+msgid "event id"
+msgstr ""
+
+#: events/models.py:34
+msgid "type"
+msgstr ""
+
+#: events/models.py:36
+msgid "occurred at"
+msgstr ""
+
+#: events/models.py:37
+msgid "received at"
+msgstr ""
+
+#: events/models.py:40
+msgid "payload"
+msgstr ""
+
+#: events/models.py:41 sales/models.py:32
+msgid "status"
+msgstr ""
+
+#: events/models.py:44
+msgid "error"
+msgstr ""
+
+#: events/models.py:45
+msgid "processed at"
+msgstr ""
+
+#: events/models.py:48
+msgid "event"
+msgstr ""
+
+#: events/models.py:49
+msgid "events"
 msgstr ""
 
 #: reports/apps.py:8
@@ -31,8 +143,7 @@ msgid "Reports"
 msgstr ""
 
 #: reports/templates/reports/dashboard.html:4
-#: reports/templates/reports/dashboard.html:7
-#: templates/includes/navbar.html:16
+#: reports/templates/reports/dashboard.html:7 templates/includes/navbar.html:16
 msgid "Dashboard"
 msgstr ""
 
@@ -44,6 +155,122 @@ msgstr ""
 msgid ""
 "Sales figures will appear here once the bookstore starts sending its order "
 "events."
+msgstr ""
+
+#: sales/apps.py:8
+msgid "Sales"
+msgstr ""
+
+#: sales/models.py:20
+msgid "New"
+msgstr ""
+
+#: sales/models.py:21
+msgid "Processing"
+msgstr ""
+
+#: sales/models.py:22
+msgid "Shipped"
+msgstr ""
+
+#: sales/models.py:23
+msgid "Completed"
+msgstr ""
+
+#: sales/models.py:24
+msgid "Cancelled"
+msgstr ""
+
+#: sales/models.py:27
+msgid "Unpaid"
+msgstr ""
+
+#: sales/models.py:28
+msgid "Partially paid"
+msgstr ""
+
+#: sales/models.py:29
+msgid "Paid"
+msgstr ""
+
+#: sales/models.py:34
+msgid "payment status"
+msgstr ""
+
+#: sales/models.py:37
+msgid "created at"
+msgstr ""
+
+#: sales/models.py:39
+msgid "paid at"
+msgstr ""
+
+#: sales/models.py:40
+msgid "cancelled at"
+msgstr ""
+
+#: sales/models.py:42
+msgid "currency"
+msgstr ""
+
+#: sales/models.py:43
+msgid "total"
+msgstr ""
+
+#: sales/models.py:44
+msgid "total, UAH"
+msgstr ""
+
+#: sales/models.py:46
+msgid "customer key"
+msgstr ""
+
+#: sales/models.py:50
+msgid "last event at"
+msgstr ""
+
+#: sales/models.py:53 sales/models.py:68
+msgid "order"
+msgstr ""
+
+#: sales/models.py:54
+msgid "orders"
+msgstr ""
+
+#: sales/models.py:63
+msgid "Paper"
+msgstr ""
+
+#: sales/models.py:64
+msgid "E-book"
+msgstr ""
+
+#: sales/models.py:65
+msgid "Audiobook"
+msgstr ""
+
+#: sales/models.py:74
+msgid "format"
+msgstr ""
+
+#: sales/models.py:75
+msgid "quantity"
+msgstr ""
+
+#: sales/models.py:77
+msgid "price"
+msgstr ""
+
+#: sales/models.py:79
+msgid "amount, UAH"
+msgstr ""
+
+#: sales/models.py:82
+msgid "order line"
+msgstr ""
+
+#: sales/models.py:83
+msgid "order lines"
 msgstr ""
 
 #: templates/403.html:9 templates/403.html:14

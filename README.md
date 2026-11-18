@@ -5,21 +5,30 @@ the [bookstore](https://github.com/OleksandrPiatnytsia/hillel_hw_33_django_ci_cd
 RabbitMQ and shows sales reports to analysts. The bookstore reads the same reports through the
 REST API.
 
-> Work in progress: stage 1 of 6 (the skeleton). The event consumer, the reports and the
-> architecture diagram come in the next stages.
+> Work in progress: stage 2 of 6 (the event consumer). The reports and the architecture diagram
+> come in the next stages.
 
 ## Stack
 
 Django 6.1, Django REST Framework, JWT (simplejwt), drf-spectacular (Swagger), PostgreSQL 17,
-Redis 8, Celery, gunicorn + uvicorn, nginx, Docker Compose, Bootstrap 5, Sentry.
+Redis 8, RabbitMQ (kombu), Celery, gunicorn + uvicorn, nginx, Docker Compose, Bootstrap 5, Sentry.
 Interface languages: Ukrainian and English.
+
+## Events
+
+The bookstore publishes `order.created`, `order.paid` and `order.cancelled` to RabbitMQ. The
+`consumer` service stores them exactly once. The contract and what happens on errors are
+described in [docs/events.md](docs/events.md).
 
 ## Run in Docker
 
+RabbitMQ lives in the bookstore's docker compose, so **start the bookstore first**. Its network
+`bookstore_net` must exist.
+
 ```bash
-cp .env.example .env          # then set DJANGO_SECRET_KEY and POSTGRES_PASSWORD
+cp .env.example .env          # set DJANGO_SECRET_KEY, POSTGRES_PASSWORD, RABBITMQ_* (as in the bookstore)
 docker compose up -d --build
-docker compose run --rm web python manage.py createsuperuser
+docker compose exec web python manage.py createsuperuser
 ```
 
 | Address                          | What                         |
@@ -28,6 +37,7 @@ docker compose run --rm web python manage.py createsuperuser
 | http://localhost:8010/admin/     | admin                        |
 | http://localhost:8010/api/docs/  | Swagger                      |
 | http://localhost:8010/health/    | health check (PostgreSQL + Redis) |
+| http://localhost:15672/          | RabbitMQ panel (bookstore's compose) |
 
 Ports differ from the bookstore's (8000 / 5432 / 6379), so both projects can run at the same time.
 

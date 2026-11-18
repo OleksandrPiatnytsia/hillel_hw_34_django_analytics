@@ -76,3 +76,25 @@ def test_database_url_must_be_postgresql(monkeypatch):
 def test_redis_url_replaces_the_database_number():
     assert redis_url("redis://redis:6379", 1) == "redis://redis:6379/1"
     assert redis_url("redis://:secret@redis:6379/0", 1) == "redis://:secret@redis:6379/1"
+
+
+# Generated with AI
+def test_rabbitmq_url_from_parts_with_a_special_password(monkeypatch):
+    from config.env import rabbitmq_url
+
+    monkeypatch.delenv("RABBITMQ_URL", raising=False)
+    monkeypatch.setenv("RABBITMQ_USER", "bookstore")
+    monkeypatch.setenv("RABBITMQ_PASSWORD", "p@ss/word")
+    monkeypatch.setenv("RABBITMQ_HOST", "rabbitmq")
+    monkeypatch.setenv("RABBITMQ_PORT", "5672")
+
+    assert rabbitmq_url() == "amqp://bookstore:p%40ss%2Fword@rabbitmq:5672//"
+
+
+# Generated with AI
+def test_rabbitmq_url_wins(monkeypatch):
+    from config.env import rabbitmq_url
+
+    monkeypatch.setenv("RABBITMQ_URL", "amqps://user:secret@cloud.example:5671/vhost")
+
+    assert rabbitmq_url() == "amqps://user:secret@cloud.example:5671/vhost"

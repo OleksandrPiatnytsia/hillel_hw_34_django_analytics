@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 16:20+0000\n"
+"POT-Creation-Date: 2026-11-18 18:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: Ukrainian\n"
@@ -18,13 +18,126 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
-#: config/settings/base.py:258
+#: catalog/apps.py:8
+msgid "Catalog"
+msgstr "Каталог"
+
+#: catalog/models.py:16 catalog/models.py:29 sales/models.py:31
+msgid "id in the bookstore"
+msgstr "id у книгарні"
+
+#: catalog/models.py:17
+msgid "name"
+msgstr "назва"
+
+#: catalog/models.py:20
+msgid "category"
+msgstr "категорія"
+
+#: catalog/models.py:21 catalog/models.py:38
+msgid "categories"
+msgstr "категорії"
+
+#: catalog/models.py:30
+msgid "title"
+msgstr "назва"
+
+#: catalog/models.py:33
+msgid "author"
+msgstr "автор"
+
+#: catalog/models.py:34
+msgid "publisher"
+msgstr "видавництво"
+
+#: catalog/models.py:36
+#| msgid "Language"
+msgid "language"
+msgstr "мова"
+
+#: catalog/models.py:41
+msgid "updated at"
+msgstr "оновлено"
+
+#: catalog/models.py:44 sales/models.py:72
+msgid "book"
+msgstr "книга"
+
+#: catalog/models.py:45
+msgid "books"
+msgstr "книги"
+
+#: config/settings/base.py:284
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: config/settings/base.py:259
+#: config/settings/base.py:285
 msgid "English"
 msgstr "Англійська"
+
+#: events/apps.py:8
+msgid "Events"
+msgstr "Події"
+
+#: events/models.py:11
+msgid "Order created"
+msgstr "Замовлення створено"
+
+#: events/models.py:12
+msgid "Order paid"
+msgstr "Замовлення оплачено"
+
+#: events/models.py:13
+msgid "Order cancelled"
+msgstr "Замовлення скасовано"
+
+#: events/models.py:29
+msgid "Processed"
+msgstr "Оброблено"
+
+#: events/models.py:30
+msgid "Failed"
+msgstr "Помилка"
+
+#: events/models.py:32
+msgid "event id"
+msgstr "id події"
+
+#: events/models.py:34
+msgid "type"
+msgstr "тип"
+
+#: events/models.py:36
+msgid "occurred at"
+msgstr "час події"
+
+#: events/models.py:37
+msgid "received at"
+msgstr "отримано"
+
+#: events/models.py:40
+msgid "payload"
+msgstr "вміст"
+
+#: events/models.py:41 sales/models.py:32
+msgid "status"
+msgstr "статус"
+
+#: events/models.py:44
+msgid "error"
+msgstr "помилка"
+
+#: events/models.py:45
+msgid "processed at"
+msgstr "оброблено о"
+
+#: events/models.py:48
+msgid "event"
+msgstr "подія"
+
+#: events/models.py:49
+msgid "events"
+msgstr "події"
 
 #: reports/apps.py:8
 msgid "Reports"
@@ -47,6 +160,122 @@ msgid ""
 msgstr ""
 "Показники продажів з'являться тут, щойно книгарня почне надсилати події "
 "замовлень."
+
+#: sales/apps.py:8
+msgid "Sales"
+msgstr "Продажі"
+
+#: sales/models.py:20
+msgid "New"
+msgstr "Нове"
+
+#: sales/models.py:21
+msgid "Processing"
+msgstr "В обробці"
+
+#: sales/models.py:22
+msgid "Shipped"
+msgstr "Відправлено"
+
+#: sales/models.py:23
+msgid "Completed"
+msgstr "Виконано"
+
+#: sales/models.py:24
+msgid "Cancelled"
+msgstr "Скасовано"
+
+#: sales/models.py:27
+msgid "Unpaid"
+msgstr "Не оплачено"
+
+#: sales/models.py:28
+msgid "Partially paid"
+msgstr "Частково оплачено"
+
+#: sales/models.py:29
+msgid "Paid"
+msgstr "Оплачено"
+
+#: sales/models.py:34
+msgid "payment status"
+msgstr "статус оплати"
+
+#: sales/models.py:37
+msgid "created at"
+msgstr "створено"
+
+#: sales/models.py:39
+msgid "paid at"
+msgstr "оплачено о"
+
+#: sales/models.py:40
+msgid "cancelled at"
+msgstr "скасовано о"
+
+#: sales/models.py:42
+msgid "currency"
+msgstr "валюта"
+
+#: sales/models.py:43
+msgid "total"
+msgstr "сума"
+
+#: sales/models.py:44
+msgid "total, UAH"
+msgstr "сума, грн"
+
+#: sales/models.py:46
+msgid "customer key"
+msgstr "ключ покупця"
+
+#: sales/models.py:50
+msgid "last event at"
+msgstr "остання подія о"
+
+#: sales/models.py:53 sales/models.py:68
+msgid "order"
+msgstr "замовлення"
+
+#: sales/models.py:54
+msgid "orders"
+msgstr "замовлення"
+
+#: sales/models.py:63
+msgid "Paper"
+msgstr "Паперова"
+
+#: sales/models.py:64
+msgid "E-book"
+msgstr "Електронна"
+
+#: sales/models.py:65
+msgid "Audiobook"
+msgstr "Аудіокнига"
+
+#: sales/models.py:74
+msgid "format"
+msgstr "формат"
+
+#: sales/models.py:75
+msgid "quantity"
+msgstr "кількість"
+
+#: sales/models.py:77
+msgid "price"
+msgstr "ціна"
+
+#: sales/models.py:79
+msgid "amount, UAH"
+msgstr "сума, грн"
+
+#: sales/models.py:82
+msgid "order line"
+msgstr "рядок замовлення"
+
+#: sales/models.py:83
+msgid "order lines"
+msgstr "рядки замовлення"
 
 #: templates/403.html:9 templates/403.html:14
 msgid "Access denied"

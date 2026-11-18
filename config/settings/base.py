@@ -27,7 +27,7 @@ from celery.schedules import crontab
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
-from config.env import database_settings, env_list, redis_url
+from config.env import database_settings, env_list, rabbitmq_url, redis_url
 from config.version import __version__, deployed_commit
 
 # The project folder (the one with manage.py): three levels above this file
@@ -67,6 +67,12 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # Local apps
     "users",
+    # The journal of the bookstore events + the consumer (RabbitMQ)
+    "events",
+    # Books and categories, as the events describe them
+    "catalog",
+    # Orders and their lines, as the events describe them
+    "sales",
     # The dashboard now; the report tables and pages come at stage 4
     "reports",
 ]
@@ -229,6 +235,28 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 
+# Events of the bookstore: RabbitMQ (events/topology.py, docs/events.md)
+#
+# RabbitMQ runs in the bookstore's docker compose (the producer must work
+# without Analytics); Analytics joins its network "bookstore_net". It
+# carries ONLY the events; the Celery broker stays Redis.
+#   bookstore.events (topic) --order.*--> analytics.events (quorum queue)
+#   a message that fails EVENTS_DELIVERY_LIMIT times, or breaks the contract
+#   --> analytics.dlx (fanout) --> analytics.events.dead
+RABBITMQ_URL = rabbitmq_url()
+EVENTS_EXCHANGE = "bookstore.events"
+EVENTS_QUEUE = "analytics.events"
+EVENTS_ROUTING_KEY = "order.*"
+EVENTS_DEAD_LETTER_EXCHANGE = "analytics.dlx"
+EVENTS_DEAD_LETTER_QUEUE = "analytics.events.dead"
+# Deliveries of one message before RabbitMQ moves it to the dead letter
+# queue: a bug in our code must not block the queue forever
+EVENTS_DELIVERY_LIMIT = 5
+# The consumer touches this file about once a second; the healthcheck of the
+# "consumer" service in docker-compose.yml checks its age
+CONSUMER_HEARTBEAT_FILE = os.getenv("CONSUMER_HEARTBEAT_FILE", "/tmp/analytics-consumer-alive")
+
+
 # Password validation
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -358,8 +386,8 @@ LOGS_DIR.mkdir(exist_ok=True)
 
 # Our own code: INFO and above (development.py: DEBUG)
 APP_LOG_LEVEL = "INFO"
-# Loggers of our apps; stage 2 adds "events" (the consumer)
-APP_LOGGERS = ("users", "reports")
+# Loggers of our apps
+APP_LOGGERS = ("users", "events", "catalog", "sales", "reports")
 
 LOGGING = {
     "version": 1,

@@ -50,3 +50,7 @@ DATABASES["default"]["OPTIONS"].pop("pool", None)
 # an error of a task fails the test instead of hiding in a log.
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
+
+# kombu's in-memory transport instead of RabbitMQ: the consumer and the
+# commands run in the tests without a server (CI has none)
+RABBITMQ_URL = "memory://"
