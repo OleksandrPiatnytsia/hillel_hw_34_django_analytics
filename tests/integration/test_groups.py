@@ -29,14 +29,15 @@ def test_create_groups_is_safe_to_run_again_and_restores_the_permissions():
     create_groups()
 
     assert Group.objects.filter(name__in=[ANALYSTS, SERVICES]).count() == 2
-    assert permission_names(analysts) == ["users.view_analytics"]
+    assert permission_names(analysts) == ["users.use_reports_api", "users.view_analytics"]
 
 
 # Generated with AI
 @pytest.mark.django_db
 def test_group_members_get_the_permissions(analyst, service_account):
     assert analyst.has_perm("users.view_analytics")
-    assert not analyst.has_perm("users.use_reports_api")
+    # Analysts may try the REST API (Swagger); services never see the pages
+    assert analyst.has_perm("users.use_reports_api")
     assert service_account.has_perm("users.use_reports_api")
     assert not service_account.has_perm("users.view_analytics")
 

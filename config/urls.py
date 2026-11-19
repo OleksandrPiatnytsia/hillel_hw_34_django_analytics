@@ -5,13 +5,19 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from config.views import health, sentry_debug
+from reports import api as report_api
 from users.api import ThrottledTokenObtainPairView
 
-# REST API under /api/ (namespace "api"); the report endpoints join at stage 4
+# REST API under /api/ (namespace "api"): tokens, the reports, the documentation
 api_urlpatterns = [
     # JWT: username + password -> access + refresh; refresh -> a new access
     path("token/", ThrottledTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # The reports for the bookstore's analytics page (reports/api.py)
+    path("reports/summary/", report_api.SummaryAPIView.as_view(), name="reports_summary"),
+    path("reports/daily/", report_api.DailyAPIView.as_view(), name="reports_daily"),
+    path("reports/top-books/", report_api.TopBooksAPIView.as_view(), name="reports_top_books"),
+    path("reports/formats/", report_api.FormatsAPIView.as_view(), name="reports_formats"),
     # OpenAPI schema (YAML) and Swagger UI built from it
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(url_name="api:schema"), name="docs"),

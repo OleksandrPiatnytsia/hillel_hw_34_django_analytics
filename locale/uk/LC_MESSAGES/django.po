@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 19:40+0000\n"
+"POT-Creation-Date: 2026-11-19 19:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: Ukrainian\n"
@@ -137,6 +137,10 @@ msgstr "подія"
 #: events/models.py:49
 msgid "events"
 msgstr "події"
+
+#: reports/api.py:43
+msgid "This account has no access to the reports API."
+msgstr "Цей обліковий запис не має доступу до API звітів."
 
 #: reports/apps.py:8 templates/includes/navbar.html:20
 msgid "Reports"

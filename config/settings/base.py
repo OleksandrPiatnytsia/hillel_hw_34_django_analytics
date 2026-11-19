@@ -364,6 +364,9 @@ REST_FRAMEWORK = {
     # the cache; over the limit: 429 + Retry-After.
     "DEFAULT_THROTTLE_RATES": {
         "token": "10/minute",
+        # The report endpoints, per account (reports/api.py): far above what
+        # the bookstore's page needs, low enough to stop a client in a loop
+        "reports": "120/minute",
     },
     # REMOTE_ADDR only: behind nginx it is already the real client address
     # (forwarded_allow_ips in gunicorn.conf.py), and X-Forwarded-For from a
@@ -388,7 +391,11 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": (
         "Sales reports of the bookstore. Authentication: JWT "
         '(POST /api/token/, then the header "Authorization: Bearer <access>") '
-        "or the session of the site login."
+        "or the session of the site login. Access: accounts of the groups "
+        "Services (the bookstore) and Analysts. Period of every report: "
+        "?period=7|30|90 (the last N days, default 30) or ?from=YYYY-MM-DD&to=YYYY-MM-DD "
+        "(at most 366 days). Money in UAH, as strings with 2 decimals. A day is a "
+        "calendar day in Kyiv; an order counts on the day it was created."
     ),
     "VERSION": __version__,
     "SERVE_INCLUDE_SCHEMA": False,

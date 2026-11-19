@@ -1,7 +1,8 @@
 """The groups of Analytics and their permissions.
 
     Analysts  the people who read the numbers: the dashboard and the web
-              reports (users.view_analytics)
+              reports (users.view_analytics), and the same reports through
+              the REST API, e.g. to try them in Swagger (users.use_reports_api)
     Services  the service accounts of other services: the bookstore reads
               the reports through the REST API with the JWT of such an
               account (users.use_reports_api)
@@ -21,7 +22,7 @@ SERVICES = "Services"
 
 # group name -> permissions as "app_label.codename"
 GROUP_PERMISSIONS = {
-    ANALYSTS: ["users.view_analytics"],
+    ANALYSTS: ["users.view_analytics", "users.use_reports_api"],
     SERVICES: ["users.use_reports_api"],
 }
 

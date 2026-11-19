@@ -147,7 +147,15 @@ Interface: Django templates + Bootstrap 5 + **Chart.js** (CDN, no frontend build
    get_table), raw values (Decimal, date, Kyiv naive datetime), CSV utf-8-sig, XLSX with
    number formats + frozen header; POST /reports/<report>/export/ -> on_commit Celery task,
    page "My exports" (meta refresh 3 s while waiting, max 15 min), download only by the
-   author (404 otherwise); openpyxl 3.1.5.
+   author (404 otherwise); openpyxl 3.1.5. 4.3 committed.
+   4.4 code written 2026-11-19 (reports/api.py): GET /api/reports/summary/ (totals + previous
+   period + changes %), /daily/ (every day, zeros included), /top-books/ (?limit=1..50, gives
+   the bookstore's source_id), /formats/; period ?period=7|30|90 or ?from=&to= checked by
+   reports/periods.py (400 with the reason, in the request language); permission
+   users.use_reports_api, now given to Analysts too (Swagger with the site session); throttle
+   scope "reports" 120/minute per account; answers cached with the reports version (real
+   dates in the key); money = strings with 2 decimals; schema passes spectacular
+   --validate --fail-on-warn.
 5. A: analytics page via B's REST + backfill; integration tests on both sides.
 6. CI/CD, Railway deploy, README with the architecture diagram, Swagger.
 

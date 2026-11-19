@@ -108,7 +108,14 @@ def books(period):
     """Every book sold in the period: copies and revenue, best first."""
     rows = (
         book_rows(period)
-        .values("book_id", title=F("book__title"), author=F("book__author"))
+        .values(
+            "book_id",
+            # The id in the bookstore: the REST API gives it, so the bookstore
+            # can link the row to its own book page
+            source_id=F("book__source_id"),
+            title=F("book__title"),
+            author=F("book__author"),
+        )
         .annotate(quantity=Sum("quantity"), revenue_uah=Sum("revenue_uah"))
         .order_by("-revenue_uah", "title")
     )
