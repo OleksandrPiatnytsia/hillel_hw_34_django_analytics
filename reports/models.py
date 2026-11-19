@@ -15,6 +15,7 @@ The rules of a day (approved 2026-11-19):
 - revenue = orders that are not cancelled; the paid part is a column of its own.
 """
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -107,3 +108,63 @@ class DirtyDay(models.Model):
 
     def __str__(self):
         return str(self.day)
+
+
+class ReportExport(models.Model):
+    """A CSV or XLSX file of a report, made in the background by Celery.
+
+        report page --POST--> ReportExport(pending) --Celery--> running
+            --> done (the file is in `content`) or failed (`error`)
+
+    The file is stored in the database, not on a disk: on Railway the web
+    service and the Celery worker are separate machines without a shared
+    disk, and the database is what both of them see. The files are small
+    (at most a year of days or a few thousand orders) and are deleted after
+    EXPORTS_KEEP_DAYS by a nightly task, so the table doesn't grow.
+    """
+
+    class Format(models.TextChoices):
+        CSV = "csv", "CSV"
+        XLSX = "xlsx", "XLSX"
+
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Waiting")
+        RUNNING = "running", _("Running")
+        DONE = "done", _("Ready")
+        FAILED = "failed", _("Failed")
+
+    # Only the author can download the file (reports/views.py)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="report_exports",
+        verbose_name=_("user"),
+    )
+    # ReportBaseView.report_name: sales, books, book, formats, ...
+    report = models.CharField(_("report"), max_length=30)
+    # The real dates (from / to), the filters and the sort of the page
+    params = models.JSONField(_("parameters"), default=dict)
+    format = models.CharField(_("format"), max_length=4, choices=Format.choices)
+    # The column names are written in the language of the page
+    language = models.CharField(_("language"), max_length=10)
+    status = models.CharField(
+        _("status"), max_length=10, choices=Status.choices, default=Status.PENDING
+    )
+    filename = models.CharField(_("file name"), max_length=150, blank=True)
+    content = models.BinaryField(_("file"), null=True, blank=True)
+    size = models.PositiveIntegerField(_("size, bytes"), default=0)
+    error = models.TextField(_("error"), blank=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True, db_index=True)
+    finished_at = models.DateTimeField(_("finished at"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("report export")
+        verbose_name_plural = _("report exports")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.report} {self.format} #{self.pk}"
+
+    @property
+    def is_finished(self):
+        return self.status in (self.Status.DONE, self.Status.FAILED)

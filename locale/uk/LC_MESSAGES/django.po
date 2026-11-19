@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 18:48+0000\n"
+"POT-Creation-Date: 2026-11-19 19:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: Ukrainian\n"
@@ -50,15 +50,15 @@ msgstr "автор"
 msgid "publisher"
 msgstr "видавництво"
 
-#: catalog/models.py:36
+#: catalog/models.py:36 reports/models.py:149
 msgid "language"
 msgstr "мова"
 
-#: catalog/models.py:41 reports/models.py:48
+#: catalog/models.py:41 reports/models.py:49
 msgid "updated at"
 msgstr "оновлено"
 
-#: catalog/models.py:44 reports/models.py:69 sales/models.py:72
+#: catalog/models.py:44 reports/models.py:70 sales/models.py:72
 msgid "book"
 msgstr "книга"
 
@@ -66,15 +66,15 @@ msgstr "книга"
 msgid "books"
 msgstr "книги"
 
-#: config/settings/base.py:295
+#: config/settings/base.py:305
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: config/settings/base.py:296
+#: config/settings/base.py:306
 msgid "English"
 msgstr "Англійська"
 
-#: events/apps.py:8 reports/templates/reports/events.html:4 reports/templates/reports/events.html:9 templates/includes/navbar.html:37
+#: events/apps.py:8 reports/templates/reports/events.html:4 reports/templates/reports/events.html:9 templates/includes/navbar.html:41
 msgid "Events"
 msgstr "Події"
 
@@ -94,7 +94,7 @@ msgstr "Замовлення скасовано"
 msgid "Processed"
 msgstr "Оброблено"
 
-#: events/models.py:30
+#: events/models.py:30 reports/models.py:134
 msgid "Failed"
 msgstr "Помилка"
 
@@ -118,11 +118,11 @@ msgstr "отримано"
 msgid "payload"
 msgstr "вміст"
 
-#: events/models.py:41 sales/models.py:32
+#: events/models.py:41 reports/models.py:151 sales/models.py:32
 msgid "status"
 msgstr "статус"
 
-#: events/models.py:44
+#: events/models.py:44 reports/models.py:156
 msgid "error"
 msgstr "помилка"
 
@@ -142,73 +142,133 @@ msgstr "події"
 msgid "Reports"
 msgstr "Звіти"
 
-#: reports/models.py:26 reports/models.py:66 reports/models.py:100
+#: reports/exports.py:58 reports/templatetags/report_tags.py:56 reports/views.py:339 reports/views.py:556
+msgid "No category"
+msgstr "Без категорії"
+
+#: reports/exports.py:156
+msgid "The file is too large. Choose a shorter period."
+msgstr "Файл завеликий. Оберіть коротший період."
+
+#: reports/models.py:27 reports/models.py:67 reports/models.py:101
 msgid "day"
 msgstr "день"
 
-#: reports/models.py:28 sales/models.py:54
+#: reports/models.py:29 sales/models.py:54
 msgid "orders"
 msgstr "замовлення"
 
-#: reports/models.py:29
+#: reports/models.py:30
 msgid "paid orders"
 msgstr "оплачені замовлення"
 
-#: reports/models.py:30
+#: reports/models.py:31
 msgid "cancelled orders"
 msgstr "скасовані замовлення"
 
-#: reports/models.py:32 reports/models.py:73
+#: reports/models.py:33 reports/models.py:74
 msgid "revenue, UAH"
 msgstr "виручка, грн"
 
-#: reports/models.py:35
+#: reports/models.py:36
 msgid "paid revenue, UAH"
 msgstr "оплачена виручка, грн"
 
-#: reports/models.py:38
+#: reports/models.py:39
 msgid "items sold"
 msgstr "продано примірників"
 
-#: reports/models.py:41
+#: reports/models.py:42
 msgid "average order, UAH"
 msgstr "середнє замовлення, грн"
 
-#: reports/models.py:44
+#: reports/models.py:45
 msgid "new customers"
 msgstr "нові покупці"
 
-#: reports/models.py:46
+#: reports/models.py:47
 msgid "returning customers"
 msgstr "повторні покупці"
 
-#: reports/models.py:51 reports/models.py:52
+#: reports/models.py:52 reports/models.py:53
 msgid "daily sales"
 msgstr "продажі за день"
 
-#: reports/models.py:71 sales/models.py:74
+#: reports/models.py:72 reports/models.py:147 sales/models.py:74
 msgid "format"
 msgstr "формат"
 
-#: reports/models.py:72 sales/models.py:75
+#: reports/models.py:73 sales/models.py:75
 msgid "quantity"
 msgstr "кількість"
 
-#: reports/models.py:76 reports/models.py:77
+#: reports/models.py:77 reports/models.py:78
 msgid "daily book sales"
 msgstr "продажі книг за день"
 
-#: reports/models.py:101
+#: reports/models.py:102
 msgid "marked at"
 msgstr "позначено"
 
-#: reports/models.py:104
+#: reports/models.py:105
 msgid "day to recalculate"
 msgstr "день для перерахунку"
 
-#: reports/models.py:105
+#: reports/models.py:106
 msgid "days to recalculate"
 msgstr "дні для перерахунку"
+
+#: reports/models.py:131
+msgid "Waiting"
+msgstr "Очікує"
+
+#: reports/models.py:132
+msgid "Running"
+msgstr "Готується"
+
+#: reports/models.py:133
+msgid "Ready"
+msgstr "Готово"
+
+#: reports/models.py:141 users/models.py:18
+msgid "user"
+msgstr "користувач"
+
+#: reports/models.py:144
+msgid "report"
+msgstr "звіт"
+
+#: reports/models.py:146
+msgid "parameters"
+msgstr "параметри"
+
+#: reports/models.py:153
+msgid "file name"
+msgstr "назва файлу"
+
+#: reports/models.py:154
+msgid "file"
+msgstr "файл"
+
+#: reports/models.py:155
+msgid "size, bytes"
+msgstr "розмір, байт"
+
+#: reports/models.py:157 sales/models.py:37
+msgid "created at"
+msgstr "створено"
+
+#: reports/models.py:158
+msgid "finished at"
+msgstr "завершено"
+
+#: reports/models.py:161
+msgid "report export"
+msgstr "експорт звіту"
+
+#: reports/models.py:162
+msgid "report exports"
+msgstr "експорти звітів"
 
 #: reports/periods.py:75
 #, python-format
@@ -223,28 +283,28 @@ msgstr "Вкажіть обидві дати у форматі РРРР-ММ-Д�
 msgid "The start of the period is later than its end."
 msgstr "Початок періоду пізніший за його кінець."
 
-#: reports/periods.py:90
+#: reports/periods.py:89
 #, python-format
 msgid "The period is too long: at most %(days)d days."
 msgstr "Період задовгий: щонайбільше %(days)d днів."
 
-#: reports/templates/reports/book.html:7 reports/views.py:366 reports/views.py:495 templates/includes/navbar.html:23
+#: reports/templates/reports/book.html:7 reports/views.py:407 reports/views.py:544 templates/includes/navbar.html:23
 msgid "Books"
 msgstr "Книги"
 
-#: reports/templates/reports/book.html:23 reports/templates/reports/book.html:27 reports/templates/reports/dashboard.html:45 reports/templates/reports/dashboard.html:46 reports/views.py:461 templates/includes/navbar.html:24
+#: reports/templates/reports/book.html:23 reports/templates/reports/book.html:27 reports/templates/reports/dashboard.html:45 reports/templates/reports/dashboard.html:46 reports/views.py:510 templates/includes/navbar.html:24
 msgid "Formats"
 msgstr "Формати"
 
-#: reports/templates/reports/book.html:34 reports/views.py:466
+#: reports/templates/reports/book.html:34 reports/templates/reports/exports.html:26 reports/views.py:515
 msgid "Format"
 msgstr "Формат"
 
-#: reports/templates/reports/book.html:35 reports/templates/reports/orders.html:52 reports/views.py:340 reports/views.py:373 reports/views.py:398 reports/views.py:448 reports/views.py:467 reports/views.py:496 reports/views.py:555
+#: reports/templates/reports/book.html:35 reports/templates/reports/orders.html:52 reports/views.py:381 reports/views.py:414 reports/views.py:439 reports/views.py:497 reports/views.py:516 reports/views.py:545 reports/views.py:604
 msgid "Copies"
 msgstr "Примірники"
 
-#: reports/templates/reports/book.html:36 reports/views.py:338 reports/views.py:374 reports/views.py:399 reports/views.py:468 reports/views.py:497
+#: reports/templates/reports/book.html:36 reports/views.py:379 reports/views.py:415 reports/views.py:440 reports/views.py:517 reports/views.py:546
 msgid "Revenue, UAH"
 msgstr "Виручка, грн"
 
@@ -252,7 +312,7 @@ msgstr "Виручка, грн"
 msgid "No sales in this period."
 msgstr "За цей період продажів немає."
 
-#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 reports/views.py:265 templates/includes/navbar.html:16
+#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 reports/views.py:304 templates/includes/navbar.html:16
 msgid "Dashboard"
 msgstr "Дашборд"
 
@@ -272,7 +332,7 @@ msgstr "Виручка по днях"
 msgid "Top 10 books"
 msgstr "Топ-10 книг"
 
-#: reports/templates/reports/dashboard.html:53 reports/templates/reports/dashboard.html:54 reports/views.py:485 templates/includes/navbar.html:25
+#: reports/templates/reports/dashboard.html:53 reports/templates/reports/dashboard.html:54 reports/views.py:534 templates/includes/navbar.html:25
 msgid "Categories"
 msgstr "Категорії"
 
@@ -297,7 +357,7 @@ msgstr[3] "%(counter)s події не оброблено: їхні повідо
 msgid "Show"
 msgstr "Показати"
 
-#: reports/templates/reports/events.html:27 reports/templates/reports/events.html:58 reports/templates/reports/orders.html:20 reports/templates/reports/orders.html:50
+#: reports/templates/reports/events.html:27 reports/templates/reports/events.html:58 reports/templates/reports/exports.html:27 reports/templates/reports/orders.html:20 reports/templates/reports/orders.html:50
 msgid "Status"
 msgstr "Статус"
 
@@ -317,7 +377,7 @@ msgstr "Скинути"
 msgid "Received"
 msgstr "Отримано"
 
-#: reports/templates/reports/events.html:57 reports/templates/reports/orders.html:48 reports/views.py:551
+#: reports/templates/reports/events.html:57 reports/templates/reports/orders.html:48 reports/views.py:600
 msgid "Order"
 msgstr "Замовлення"
 
@@ -333,13 +393,46 @@ msgstr "Помилка"
 msgid "No events found."
 msgstr "Подій не знайдено."
 
+#: reports/templates/reports/exports.html:4 reports/templates/reports/exports.html:12 templates/includes/navbar.html:36
+msgid "My exports"
+msgstr "Мої експорти"
+
+#: reports/templates/reports/exports.html:14
+#, python-format
+msgid "CSV and XLSX files of the reports. A file is kept for %(days)s day."
+msgid_plural "CSV and XLSX files of the reports. A file is kept for %(days)s days."
+msgstr[0] "CSV- та XLSX-файли звітів. Файл зберігається %(days)s день."
+msgstr[1] "CSV- та XLSX-файли звітів. Файл зберігається %(days)s дні."
+msgstr[2] "CSV- та XLSX-файли звітів. Файл зберігається %(days)s днів."
+msgstr[3] "CSV- та XLSX-файли звітів. Файл зберігається %(days)s дня."
+
+#: reports/templates/reports/exports.html:23 reports/templates/reports/orders.html:49 reports/views.py:601
+msgid "Created"
+msgstr "Створено"
+
+#: reports/templates/reports/exports.html:24
+msgid "Report"
+msgstr "Звіт"
+
+#: reports/templates/reports/exports.html:25 reports/templates/reports/includes/period_filter.html:7
+msgid "Period"
+msgstr "Період"
+
+#: reports/templates/reports/exports.html:28
+msgid "File"
+msgstr "Файл"
+
+#: reports/templates/reports/exports.html:54
+msgid "Download"
+msgstr "Завантажити"
+
+#: reports/templates/reports/exports.html:62
+msgid "No exports yet. Use the CSV / XLSX buttons on a report page."
+msgstr "Експортів ще немає. Скористайтеся кнопками CSV / XLSX на сторінці звіту."
+
 #: reports/templates/reports/includes/pagination.html:4
 msgid "Pages"
 msgstr "Сторінки"
-
-#: reports/templates/reports/includes/period_filter.html:7
-msgid "Period"
-msgstr "Період"
 
 #: reports/templates/reports/includes/period_filter.html:12
 #, python-format
@@ -374,7 +467,7 @@ msgstr "нове"
 msgid "vs previous"
 msgstr "до попереднього"
 
-#: reports/templates/reports/orders.html:4 reports/templates/reports/orders.html:7 reports/views.py:92 reports/views.py:335 templates/includes/navbar.html:32
+#: reports/templates/reports/orders.html:4 reports/templates/reports/orders.html:7 reports/views.py:100 reports/views.py:376 templates/includes/navbar.html:32
 msgid "Orders"
 msgstr "Замовлення"
 
@@ -386,19 +479,15 @@ msgstr "Замовлення такими, як їх описали події �
 msgid "Order number"
 msgstr "Номер замовлення"
 
-#: reports/templates/reports/orders.html:29 reports/templates/reports/orders.html:51 reports/views.py:554
+#: reports/templates/reports/orders.html:29 reports/templates/reports/orders.html:51 reports/views.py:603
 msgid "Payment"
 msgstr "Оплата"
-
-#: reports/templates/reports/orders.html:49 reports/views.py:552
-msgid "Created"
-msgstr "Створено"
 
 #: reports/templates/reports/orders.html:53
 msgid "Total"
 msgstr "Сума"
 
-#: reports/templates/reports/orders.html:54 reports/views.py:556
+#: reports/templates/reports/orders.html:54 reports/views.py:605
 msgid "Total, UAH"
 msgstr "Сума, грн"
 
@@ -406,7 +495,7 @@ msgstr "Сума, грн"
 msgid "No orders found."
 msgstr "Замовлень не знайдено."
 
-#: reports/templates/reports/report.html:22
+#: reports/templates/reports/report.html:37
 msgid "Print"
 msgstr "Друк"
 
@@ -414,133 +503,137 @@ msgstr "Друк"
 msgid "Group by"
 msgstr "Групувати"
 
-#: reports/templatetags/report_tags.py:56 reports/views.py:298 reports/views.py:507
-msgid "No category"
-msgstr "Без категорії"
-
-#: reports/views.py:91 reports/views.py:283 reports/views.py:288 reports/views.py:294 reports/views.py:299 reports/views.py:352 reports/views.py:385 reports/views.py:429 reports/views.py:443 reports/views.py:479 reports/views.py:508
+#: reports/views.py:99 reports/views.py:324 reports/views.py:329 reports/views.py:335 reports/views.py:340 reports/views.py:393 reports/views.py:426 reports/views.py:476 reports/views.py:492 reports/views.py:528 reports/views.py:557
 msgid "Revenue"
 msgstr "Виручка"
 
-#: reports/views.py:93
+#: reports/views.py:101
 msgid "Average order"
 msgstr "Середнє замовлення"
 
-#: reports/views.py:94 reports/views.py:430
+#: reports/views.py:102 reports/views.py:477
 msgid "Copies sold"
 msgstr "Продано примірників"
 
-#: reports/views.py:95 reports/views.py:336 sales/models.py:29
+#: reports/views.py:103 reports/views.py:377 sales/models.py:29
 msgid "Paid"
 msgstr "Оплачено"
 
-#: reports/views.py:96
+#: reports/views.py:104
 msgid "Cancelled orders"
 msgstr "Скасовані замовлення"
 
-#: reports/views.py:97 reports/views.py:337 reports/views.py:553 sales/models.py:24
+#: reports/views.py:105 reports/views.py:378 reports/views.py:602 sales/models.py:24
 msgid "Cancelled"
 msgstr "Скасовано"
 
-#: reports/views.py:98 reports/views.py:523 reports/views.py:537
+#: reports/views.py:106 reports/views.py:572 reports/views.py:586
 msgid "New customers"
 msgstr "Нові покупці"
 
-#: reports/views.py:99 reports/views.py:524 reports/views.py:538
+#: reports/views.py:107 reports/views.py:573 reports/views.py:587
 msgid "Returning customers"
 msgstr "Повторні покупці"
 
-#: reports/views.py:310 reports/views.py:397 reports/views.py:522
+#: reports/views.py:351 reports/views.py:438 reports/views.py:571
 msgid "Day"
 msgstr "День"
 
-#: reports/views.py:311
+#: reports/views.py:352
 msgid "Week (from Monday)"
 msgstr "Тиждень (з понеділка)"
 
-#: reports/views.py:312
+#: reports/views.py:353
 msgid "Month"
 msgstr "Місяць"
 
-#: reports/views.py:319 sales/apps.py:8 templates/includes/navbar.html:22
+#: reports/views.py:360 sales/apps.py:8 templates/includes/navbar.html:22
 msgid "Sales"
 msgstr "Продажі"
 
-#: reports/views.py:320
+#: reports/views.py:361
 msgid "Orders and revenue by day, week or month."
 msgstr "Замовлення й виручка по днях, тижнях або місяцях."
 
-#: reports/views.py:339
+#: reports/views.py:380
 msgid "Paid revenue, UAH"
 msgstr "Оплачена виручка, грн"
 
-#: reports/views.py:341
+#: reports/views.py:382
 msgid "Average order, UAH"
 msgstr "Середнє замовлення, грн"
 
-#: reports/views.py:353
+#: reports/views.py:394
 msgid "Paid revenue"
 msgstr "Оплачена виручка"
 
-#: reports/views.py:367
+#: reports/views.py:408
 msgid "Every book sold in the period. Click a title for its own page."
 msgstr "Усі книги, продані за період. Натисніть на назву, щоб відкрити сторінку книги."
 
-#: reports/views.py:371
+#: reports/views.py:412
 msgid "Title"
 msgstr "Назва"
 
-#: reports/views.py:372
+#: reports/views.py:413
 msgid "Author"
 msgstr "Автор"
 
-#: reports/views.py:462
+#: reports/views.py:511
 msgid "Paper books, e-books and audiobooks."
 msgstr "Паперові книги, електронні книги та аудіокниги."
 
-#: reports/views.py:469
+#: reports/views.py:518
 msgid "Share of revenue"
 msgstr "Частка виручки"
 
-#: reports/views.py:486
+#: reports/views.py:535
 msgid "Copies and revenue of the books of every category."
 msgstr "Примірники й виручка книг кожної категорії."
 
-#: reports/views.py:488
+#: reports/views.py:537
 msgid "A book with several categories is counted in each of them, so the sum of this table can be larger than the total revenue."
 msgstr "Книга з кількома категоріями рахується в кожній із них, тому сума цієї таблиці може бути більшою за загальну виручку."
 
-#: reports/views.py:494
+#: reports/views.py:543
 msgid "Category"
 msgstr "Категорія"
 
-#: reports/views.py:514 reports/views.py:525 templates/includes/navbar.html:26
+#: reports/views.py:563 reports/views.py:574 templates/includes/navbar.html:26
 msgid "Customers"
 msgstr "Покупці"
 
-#: reports/views.py:516
+#: reports/views.py:565
 msgid "New customers make their first order; returning ones have ordered before. No personal data: a customer is an anonymous key."
 msgstr "Нові покупці роблять перше замовлення, повторні вже замовляли раніше. Без персональних даних: покупець — це анонімний ключ."
 
-#: reports/views.py:526
+#: reports/views.py:575
 msgid "Returning share"
 msgstr "Частка повторних"
 
-#: reports/views.py:546 templates/includes/navbar.html:27
+#: reports/views.py:595 templates/includes/navbar.html:27
 msgid "Cancellations"
 msgstr "Скасування"
 
-#: reports/views.py:547
+#: reports/views.py:596
 msgid "The share of cancelled orders by day and every cancelled order."
 msgstr "Частка скасованих замовлень по днях і кожне скасоване замовлення."
 
-#: reports/views.py:557
+#: reports/views.py:606
 msgid "Hours to cancel"
 msgstr "Годин до скасування"
 
-#: reports/views.py:570
+#: reports/views.py:619
 msgid "Cancelled, %"
 msgstr "Скасовано, %"
+
+#: reports/views.py:750
+msgid "The file is being prepared. It will appear in this list."
+msgstr "Файл готується. Він з'явиться в цьому списку."
+
+#: reports/views.py:774
+msgid "Book"
+msgstr "Книга"
 
 #: sales/models.py:20
 msgid "New"
@@ -569,10 +662,6 @@ msgstr "Частково оплачено"
 #: sales/models.py:34
 msgid "payment status"
 msgstr "статус оплати"
-
-#: sales/models.py:37
-msgid "created at"
-msgstr "створено"
 
 #: sales/models.py:39
 msgid "paid at"
@@ -698,33 +787,29 @@ msgstr "Закрити"
 msgid "Toggle navigation"
 msgstr "Перемкнути навігацію"
 
-#: templates/includes/navbar.html:43
+#: templates/includes/navbar.html:47
 msgid "Admin"
 msgstr "Адмінка"
 
-#: templates/includes/navbar.html:46
+#: templates/includes/navbar.html:50
 msgid "API"
 msgstr "API"
 
-#: templates/includes/navbar.html:58
+#: templates/includes/navbar.html:62
 msgid "Language"
 msgstr "Мова"
 
-#: templates/includes/navbar.html:78
+#: templates/includes/navbar.html:82
 msgid "Log out"
 msgstr "Вийти"
 
-#: templates/includes/navbar.html:82 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
+#: templates/includes/navbar.html:86 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
 msgid "Log in"
 msgstr "Увійти"
 
 #: users/apps.py:9
 msgid "Users"
 msgstr "Користувачі"
-
-#: users/models.py:18
-msgid "user"
-msgstr "користувач"
 
 #: users/models.py:19
 msgid "users"

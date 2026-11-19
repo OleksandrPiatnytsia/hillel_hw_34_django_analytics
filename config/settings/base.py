@@ -243,7 +243,17 @@ CELERY_BEAT_SCHEDULE = {
         "task": "reports.tasks.close_yesterday",
         "schedule": crontab(hour=1, minute=0),
     },
+    # CSV / XLSX files older than EXPORTS_KEEP_DAYS out of the database
+    "delete-old-exports": {
+        "task": "reports.tasks.delete_old_exports",
+        "schedule": crontab(hour=3, minute=30),
+    },
 }
+
+# The files of the report exports live in the database (reports.ReportExport):
+# a limit of one file and how many days they are kept
+EXPORT_MAX_BYTES = 5 * 1024 * 1024
+EXPORTS_KEEP_DAYS = 7
 
 
 # Events of the bookstore: RabbitMQ (events/topology.py, docs/events.md)

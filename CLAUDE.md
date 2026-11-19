@@ -139,7 +139,15 @@ Interface: Django templates + Bootstrap 5 + **Chart.js** (CDN, no frontend build
    (ReportBaseView: Column / Tile dataclasses, sort + pagination over cached rows, ?print=1 =
    all rows + print dialog; cache keys hold real dates, not "period=30"), templatetags
    report_tags (format_value, report_cell, kyiv), Chart.js 4.6.1 via static/js/reports.js;
-   events journal needs events.view_event (superusers), not Analysts.
+   events journal needs events.view_event (superusers), not Analysts. 4.2 committed.
+   4.3 code written 2026-11-19: model ReportExport (params with real from/to dates + filters +
+   sort, language of the page, content BinaryField, EXPORT_MAX_BYTES 5 MB, EXPORTS_KEEP_DAYS 7,
+   beat delete-old-exports 03:30 UTC); reports/exports.py builds the table through
+   ReportBaseView.for_export() (self.params instead of request: read_params / prepare /
+   get_table), raw values (Decimal, date, Kyiv naive datetime), CSV utf-8-sig, XLSX with
+   number formats + frozen header; POST /reports/<report>/export/ -> on_commit Celery task,
+   page "My exports" (meta refresh 3 s while waiting, max 15 min), download only by the
+   author (404 otherwise); openpyxl 3.1.5.
 5. A: analytics page via B's REST + backfill; integration tests on both sides.
 6. CI/CD, Railway deploy, README with the architecture diagram, Swagger.
 

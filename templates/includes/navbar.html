@@ -31,6 +31,10 @@
               <a class="nav-link{% if current == 'orders' %} active" aria-current="page{% endif %}"
                  href="{% url 'reports:orders' %}">{% translate "Orders" %}</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link{% if current == 'exports' %} active" aria-current="page{% endif %}"
+                 href="{% url 'reports:exports' %}">{% translate "My exports" %}</a>
+            </li>
             {% if perms.events.view_event %}
               <li class="nav-item">
                 <a class="nav-link{% if current == 'events' %} active" aria-current="page{% endif %}"

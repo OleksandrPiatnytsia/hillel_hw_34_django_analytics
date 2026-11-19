@@ -17,7 +17,22 @@
       {{ period.first|date:"SHORT_DATE_FORMAT" }} – {{ period.last|date:"SHORT_DATE_FORMAT" }}
     </p>
   </div>
-  <div class="d-print-none">
+  <div class="d-print-none d-flex flex-wrap gap-2">
+    {% if exportable %}
+      {# The file is made by Celery with the same period, filters and sort #}
+      {# as this page; the user gets it on the page "My exports" #}
+      <form method="post" action="{% url 'reports:export_create' report_name %}" class="btn-group">
+        {% csrf_token %}
+        {% for name, value in export_params.items %}
+          <input type="hidden" name="{{ name }}" value="{{ value }}">
+        {% endfor %}
+        {% for value, label in export_formats %}
+          <button type="submit" name="format" value="{{ value }}" class="btn btn-sm btn-outline-success">
+            ⬇ {{ label }}
+          </button>
+        {% endfor %}
+      </form>
+    {% endif %}
     {# All the rows on one page, then the print dialog (static/js/reports.js) #}
     <a class="btn btn-sm btn-outline-secondary" href="{% querystring print=1 page=None %}">🖨 {% translate "Print" %}</a>
   </div>

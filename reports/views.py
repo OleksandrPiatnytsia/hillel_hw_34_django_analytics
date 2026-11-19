@@ -14,16 +14,21 @@ The numbers come from reports/queries.py through the cache of answers
 """
 
 from dataclasses import dataclass
+from datetime import timedelta
 from urllib.parse import urlencode
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Count, Sum
-from django.shortcuts import get_object_or_404
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils import timezone, translation
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, View
 
 from catalog.models import Book
 from events.models import Event, EventType
@@ -31,7 +36,10 @@ from sales.models import Order, OrderLine
 
 from . import queries
 from .cache import cached_answer
+from .exports import CONTENT_TYPES
+from .models import ReportExport
 from .periods import DEFAULT_PRESET, PRESETS, PeriodError, compare, parse_period, preset_period
+from .tasks import generate_export
 
 
 class AnalyticsAccessMixin(LoginRequiredMixin, PermissionRequiredMixin):
@@ -133,8 +141,10 @@ def format_name(value):
 
 class ReportBaseView(AnalyticsAccessMixin, TemplateView):
     template_name = "reports/report.html"
-    # The key of the cached answers (and of the exports at stage 4.3)
+    # The key of the cached answers and of the exports (reports/exports.py)
     report_name = ""
+    # False: no CSV / XLSX buttons (the dashboard)
+    exportable = True
     title = ""
     description = ""
     columns = []
@@ -154,7 +164,20 @@ class ReportBaseView(AnalyticsAccessMixin, TemplateView):
             # a message instead of an error page
             messages.error(request, str(error))
             self.period = preset_period(DEFAULT_PRESET)
+        self.params = self.read_params(request.GET)
+        self.prepare()
         return super().get(request, *args, **kwargs)
+
+    @classmethod
+    def for_export(cls, period, params):
+        """The same report without a request: for the Celery task of an
+        export (reports/exports.py). The table is then built by exactly the
+        code of the page, so the file and the screen never disagree."""
+        view = cls()
+        view.period = period
+        view.params = params
+        view.prepare()
+        return view
 
     # --- what a report overrides ---------------------------------------------
 
@@ -170,12 +193,22 @@ class ReportBaseView(AnalyticsAccessMixin, TemplateView):
         main = self.get_chart(rows)
         return {"main": main} if main else {}
 
-    def get_extra_params(self):
-        """Filters of a report besides the period (the group of the sales)."""
+    def read_params(self, query):
+        """The filters of the report besides the period, from the URL query,
+        checked: the group of the sales, the book of the book page."""
         return {}
+
+    def prepare(self):
+        """Load what the params point to (the book of the book page)."""
 
     def get_columns(self):
         return self.columns
+
+    def get_table(self, sort=""):
+        """(columns, rows sorted): what an export writes into its file."""
+        sort = self.get_sort(sort)
+        rows = self.cached(self.report_name, self.get_rows, **self.params)
+        return self.get_columns(), self.sort_rows(rows, sort)
 
     # --- the common part -----------------------------------------------------
 
@@ -194,10 +227,11 @@ class ReportBaseView(AnalyticsAccessMixin, TemplateView):
         previous = self.get_summary(self.period.previous)
         return [tile_item(TILES[key], current[key], previous[key]) for key in self.tile_keys]
 
-    def get_sort(self):
+    def get_sort(self, requested):
+        """The requested sort if it names a sortable column, else the default."""
         allowed = {column.key for column in self.get_columns() if column.sortable}
-        sort = self.request.GET.get("sort", self.default_sort)
-        return sort if sort.lstrip("-") in allowed else self.default_sort
+        requested = requested or self.default_sort
+        return requested if requested.lstrip("-") in allowed else self.default_sort
 
     def sort_rows(self, rows, sort):
         if not sort:
@@ -229,8 +263,8 @@ class ReportBaseView(AnalyticsAccessMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        rows = self.cached(self.report_name, self.get_rows, **self.get_extra_params())
-        sort = self.get_sort()
+        rows = self.cached(self.report_name, self.get_rows, **self.params)
+        sort = self.get_sort(self.request.GET.get("sort", ""))
         # The print view (?print=1): every row on one page
         printing = bool(self.request.GET.get("print"))
         per_page = max(len(rows), 1) if printing else self.paginate_by
@@ -246,7 +280,11 @@ class ReportBaseView(AnalyticsAccessMixin, TemplateView):
             period_query=urlencode(self.period.as_params()),
             presets=PRESETS,
             printing=printing,
-            extra_params=self.get_extra_params(),
+            report_name=self.report_name,
+            exportable=self.exportable,
+            # What the export buttons send: the period, the filters, the sort
+            export_params={**self.period.as_params(), **self.params, "sort": sort},
+            export_formats=ReportExport.Format.choices,
             tiles=self.get_tiles(),
             charts=self.get_charts(rows),
             headers=self.get_headers(sort),
@@ -262,6 +300,7 @@ class DashboardView(ReportBaseView):
 
     template_name = "reports/dashboard.html"
     report_name = "dashboard"
+    exportable = False
     title = _("Dashboard")
     tile_keys = (
         "revenue_uah",
@@ -323,12 +362,12 @@ class SalesReportView(ReportBaseView):
     default_sort = "-day"
     tile_keys = ("revenue_uah", "orders", "average_order_uah", "paid_share")
 
-    def get_group(self):
-        group = self.request.GET.get("group", "day")
-        return group if group in GROUPS else "day"
+    def read_params(self, query):
+        group = query.get("group", "day")
+        return {"group": group if group in GROUPS else "day"}
 
-    def get_extra_params(self):
-        return {"group": self.get_group()}
+    def get_group(self):
+        return self.params.get("group", "day")
 
     def get_columns(self):
         label, kind = GROUPS[self.get_group()]
@@ -401,16 +440,22 @@ class BookReportView(ReportBaseView):
         Column("revenue_uah", _("Revenue, UAH"), "money"),
     ]
 
-    def dispatch(self, request, *args, **kwargs):
-        self.book = get_object_or_404(Book, pk=kwargs["pk"])
-        return super().dispatch(request, *args, **kwargs)
+    def read_params(self, query):
+        # The page: the book is in the path (/reports/books/<pk>/); the
+        # export form sends it as a field
+        pk = getattr(self, "kwargs", {}).get("pk") or query.get("book")
+        try:
+            return {"book": int(pk)}
+        except (TypeError, ValueError):
+            raise Http404("No book") from None
+
+    def prepare(self):
+        # 404 for the page; for an export of a book that is gone: a failed export
+        self.book = get_object_or_404(Book, pk=self.params["book"])
 
     @property
     def title(self):
         return self.book.title
-
-    def get_extra_params(self):
-        return {"book": self.book.pk}
 
     def get_rows(self):
         return queries.book_by_day(self.book, self.period)
@@ -639,3 +684,120 @@ class EventListView(AnalyticsAccessMixin, ListView):
             elided_pages=context["paginator"].get_elided_page_range(context["page_obj"].number),
         )
         return context
+
+
+# --- Exports (CSV / XLSX) --------------------------------------------------------
+
+# report_name -> the page class that builds its table
+EXPORTABLE_REPORTS = {
+    view.report_name: view
+    for view in (
+        SalesReportView,
+        BooksReportView,
+        BookReportView,
+        FormatsReportView,
+        CategoriesReportView,
+        CustomersReportView,
+        CancellationsReportView,
+    )
+}
+
+
+class ExportCreateView(AnalyticsAccessMixin, View):
+    """POST from a report page: remember the export and start the Celery task.
+
+    The file is not made here: a big report would keep the page waiting
+    (and gunicorn's worker busy). The user goes to "My exports" and gets
+    the file there when the task is done.
+    """
+
+    http_method_names = ["post"]
+
+    def post(self, request, report):
+        page_class = EXPORTABLE_REPORTS.get(report)
+        export_format = request.POST.get("format")
+        if page_class is None or export_format not in ReportExport.Format.values:
+            raise Http404("Unknown report or format")
+
+        back = request.META.get("HTTP_REFERER") or reverse("reports:dashboard")
+        try:
+            period = parse_period(request.POST)
+        except PeriodError as error:
+            messages.error(request, str(error))
+            return redirect(back)
+
+        # The same checks as for the page: a valid group, an existing book
+        page = page_class()
+        params = page.read_params(request.POST)
+        page.params = params
+        page.prepare()
+
+        # The real dates, not "period=30": the file shows the days the user saw
+        export = ReportExport.objects.create(
+            user=request.user,
+            report=report,
+            params={
+                "from": period.first.isoformat(),
+                "to": period.last.isoformat(),
+                **params,
+                "sort": page.get_sort(request.POST.get("sort", "")),
+            },
+            format=export_format,
+            language=translation.get_language(),
+        )
+        # After the commit: the worker must find the row in the database
+        transaction.on_commit(lambda: generate_export.delay(export.pk))
+        messages.success(request, _("The file is being prepared. It will appear in this list."))
+        return redirect("reports:exports")
+
+
+# An export still waiting after this long is not waited for on the page
+# (the worker was down): the page stops refreshing itself
+REFRESH_WAIT = timedelta(minutes=15)
+
+
+class ExportListView(AnalyticsAccessMixin, ListView):
+    """My exports: their status and the download links. Only one's own."""
+
+    template_name = "reports/exports.html"
+    paginate_by = 20
+
+    def get_queryset(self):
+        # defer: the list never needs the files themselves
+        return ReportExport.objects.filter(user=self.request.user).defer("content")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for export in context["object_list"]:
+            page_class = EXPORTABLE_REPORTS.get(export.report)
+            export.report_title = (
+                _("Book")
+                if export.report == "book"
+                else getattr(page_class, "title", export.report)
+            )
+        context["waiting"] = (
+            self.get_queryset()
+            .filter(
+                status__in=[ReportExport.Status.PENDING, ReportExport.Status.RUNNING],
+                created_at__gte=timezone.now() - REFRESH_WAIT,
+            )
+            .exists()
+        )
+        context["keep_days"] = settings.EXPORTS_KEEP_DAYS
+        context["elided_pages"] = context["paginator"].get_elided_page_range(
+            context["page_obj"].number
+        )
+        return context
+
+
+class ExportDownloadView(AnalyticsAccessMixin, View):
+    """The file of a ready export. Someone else's export is 404, not 403:
+    the page doesn't even confirm that it exists."""
+
+    def get(self, request, pk):
+        export = get_object_or_404(
+            ReportExport, pk=pk, user=request.user, status=ReportExport.Status.DONE
+        )
+        response = HttpResponse(bytes(export.content), content_type=CONTENT_TYPES[export.format])
+        response["Content-Disposition"] = f'attachment; filename="{export.filename}"'
+        return response

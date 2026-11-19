@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load i18n report_tags %}
+
+{% block title %}{% translate "My exports" %}{% endblock %}
+
+{% block head %}
+  {# A file is still being made: the page reloads itself every 3 seconds #}
+  {% if waiting %}<meta http-equiv="refresh" content="3">{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-1">{% translate "My exports" %}</h1>
+<p class="text-body-secondary">
+  {% blocktranslate count days=keep_days %}CSV and XLSX files of the reports. A file is kept for {{ days }} day.{% plural %}CSV and XLSX files of the reports. A file is kept for {{ days }} days.{% endblocktranslate %}
+</p>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col">{% translate "Created" %}</th>
+            <th scope="col">{% translate "Report" %}</th>
+            <th scope="col">{% translate "Period" %}</th>
+            <th scope="col">{% translate "Format" %}</th>
+            <th scope="col">{% translate "Status" %}</th>
+            <th scope="col" class="text-end">{% translate "File" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for export in object_list %}
+            <tr>
+              <td class="text-nowrap">{{ export.created_at|kyiv }}</td>
+              <td>{{ export.report_title }}</td>
+              <td class="text-nowrap">{{ export.params.from }} – {{ export.params.to }}</td>
+              <td>{{ export.get_format_display }}</td>
+              <td>
+                {% if export.status == "done" %}
+                  <span class="badge text-bg-success">{{ export.get_status_display }}</span>
+                {% elif export.status == "failed" %}
+                  <span class="badge text-bg-danger">{{ export.get_status_display }}</span>
+                  <div class="small text-danger">{{ export.error }}</div>
+                {% else %}
+                  <span class="badge text-bg-secondary">
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    {{ export.get_status_display }}
+                  </span>
+                {% endif %}
+              </td>
+              <td class="text-end">
+                {% if export.status == "done" %}
+                  <a class="btn btn-sm btn-success" href="{% url 'reports:export_download' export.pk %}">
+                    ⬇ {% translate "Download" %}
+                  </a>
+                  <div class="small text-body-secondary">{{ export.size|filesizeformat }}</div>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="text-center text-body-secondary py-4">
+              {% translate "No exports yet. Use the CSV / XLSX buttons on a report page." %}
+            </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "reports/includes/pagination.html" %}
+  </div>
+</div>
+{% endblock %}

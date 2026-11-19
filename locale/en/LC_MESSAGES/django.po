@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 18:48+0000\n"
+"POT-Creation-Date: 2026-11-19 19:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: English\n"
@@ -50,15 +50,15 @@ msgstr ""
 msgid "publisher"
 msgstr ""
 
-#: catalog/models.py:36
+#: catalog/models.py:36 reports/models.py:149
 msgid "language"
 msgstr ""
 
-#: catalog/models.py:41 reports/models.py:48
+#: catalog/models.py:41 reports/models.py:49
 msgid "updated at"
 msgstr ""
 
-#: catalog/models.py:44 reports/models.py:69 sales/models.py:72
+#: catalog/models.py:44 reports/models.py:70 sales/models.py:72
 msgid "book"
 msgstr ""
 
@@ -66,15 +66,15 @@ msgstr ""
 msgid "books"
 msgstr ""
 
-#: config/settings/base.py:295
+#: config/settings/base.py:305
 msgid "Ukrainian"
 msgstr ""
 
-#: config/settings/base.py:296
+#: config/settings/base.py:306
 msgid "English"
 msgstr ""
 
-#: events/apps.py:8 reports/templates/reports/events.html:4 reports/templates/reports/events.html:9 templates/includes/navbar.html:37
+#: events/apps.py:8 reports/templates/reports/events.html:4 reports/templates/reports/events.html:9 templates/includes/navbar.html:41
 msgid "Events"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgstr ""
 msgid "Processed"
 msgstr ""
 
-#: events/models.py:30
+#: events/models.py:30 reports/models.py:134
 msgid "Failed"
 msgstr ""
 
@@ -118,11 +118,11 @@ msgstr ""
 msgid "payload"
 msgstr ""
 
-#: events/models.py:41 sales/models.py:32
+#: events/models.py:41 reports/models.py:151 sales/models.py:32
 msgid "status"
 msgstr ""
 
-#: events/models.py:44
+#: events/models.py:44 reports/models.py:156
 msgid "error"
 msgstr ""
 
@@ -142,72 +142,132 @@ msgstr ""
 msgid "Reports"
 msgstr ""
 
-#: reports/models.py:26 reports/models.py:66 reports/models.py:100
+#: reports/exports.py:58 reports/templatetags/report_tags.py:56 reports/views.py:339 reports/views.py:556
+msgid "No category"
+msgstr ""
+
+#: reports/exports.py:156
+msgid "The file is too large. Choose a shorter period."
+msgstr ""
+
+#: reports/models.py:27 reports/models.py:67 reports/models.py:101
 msgid "day"
 msgstr ""
 
-#: reports/models.py:28 sales/models.py:54
+#: reports/models.py:29 sales/models.py:54
 msgid "orders"
 msgstr ""
 
-#: reports/models.py:29
+#: reports/models.py:30
 msgid "paid orders"
 msgstr ""
 
-#: reports/models.py:30
+#: reports/models.py:31
 msgid "cancelled orders"
 msgstr ""
 
-#: reports/models.py:32 reports/models.py:73
+#: reports/models.py:33 reports/models.py:74
 msgid "revenue, UAH"
 msgstr ""
 
-#: reports/models.py:35
+#: reports/models.py:36
 msgid "paid revenue, UAH"
 msgstr ""
 
-#: reports/models.py:38
+#: reports/models.py:39
 msgid "items sold"
 msgstr ""
 
-#: reports/models.py:41
+#: reports/models.py:42
 msgid "average order, UAH"
 msgstr ""
 
-#: reports/models.py:44
+#: reports/models.py:45
 msgid "new customers"
 msgstr ""
 
-#: reports/models.py:46
+#: reports/models.py:47
 msgid "returning customers"
 msgstr ""
 
-#: reports/models.py:51 reports/models.py:52
+#: reports/models.py:52 reports/models.py:53
 msgid "daily sales"
 msgstr ""
 
-#: reports/models.py:71 sales/models.py:74
+#: reports/models.py:72 reports/models.py:147 sales/models.py:74
 msgid "format"
 msgstr ""
 
-#: reports/models.py:72 sales/models.py:75
+#: reports/models.py:73 sales/models.py:75
 msgid "quantity"
 msgstr ""
 
-#: reports/models.py:76 reports/models.py:77
+#: reports/models.py:77 reports/models.py:78
 msgid "daily book sales"
 msgstr ""
 
-#: reports/models.py:101
+#: reports/models.py:102
 msgid "marked at"
 msgstr ""
 
-#: reports/models.py:104
+#: reports/models.py:105
 msgid "day to recalculate"
 msgstr ""
 
-#: reports/models.py:105
+#: reports/models.py:106
 msgid "days to recalculate"
+msgstr ""
+
+#: reports/models.py:131
+msgid "Waiting"
+msgstr ""
+
+#: reports/models.py:132
+msgid "Running"
+msgstr ""
+
+#: reports/models.py:133
+msgid "Ready"
+msgstr ""
+
+#: reports/models.py:141 users/models.py:18
+msgid "user"
+msgstr ""
+
+#: reports/models.py:144
+msgid "report"
+msgstr ""
+
+#: reports/models.py:146
+msgid "parameters"
+msgstr ""
+
+#: reports/models.py:153
+msgid "file name"
+msgstr ""
+
+#: reports/models.py:154
+msgid "file"
+msgstr ""
+
+#: reports/models.py:155
+msgid "size, bytes"
+msgstr ""
+
+#: reports/models.py:157 sales/models.py:37
+msgid "created at"
+msgstr ""
+
+#: reports/models.py:158
+msgid "finished at"
+msgstr ""
+
+#: reports/models.py:161
+msgid "report export"
+msgstr ""
+
+#: reports/models.py:162
+msgid "report exports"
 msgstr ""
 
 #: reports/periods.py:75
@@ -223,28 +283,28 @@ msgstr ""
 msgid "The start of the period is later than its end."
 msgstr ""
 
-#: reports/periods.py:90
+#: reports/periods.py:89
 #, python-format
 msgid "The period is too long: at most %(days)d days."
 msgstr ""
 
-#: reports/templates/reports/book.html:7 reports/views.py:366 reports/views.py:495 templates/includes/navbar.html:23
+#: reports/templates/reports/book.html:7 reports/views.py:407 reports/views.py:544 templates/includes/navbar.html:23
 msgid "Books"
 msgstr ""
 
-#: reports/templates/reports/book.html:23 reports/templates/reports/book.html:27 reports/templates/reports/dashboard.html:45 reports/templates/reports/dashboard.html:46 reports/views.py:461 templates/includes/navbar.html:24
+#: reports/templates/reports/book.html:23 reports/templates/reports/book.html:27 reports/templates/reports/dashboard.html:45 reports/templates/reports/dashboard.html:46 reports/views.py:510 templates/includes/navbar.html:24
 msgid "Formats"
 msgstr ""
 
-#: reports/templates/reports/book.html:34 reports/views.py:466
+#: reports/templates/reports/book.html:34 reports/templates/reports/exports.html:26 reports/views.py:515
 msgid "Format"
 msgstr ""
 
-#: reports/templates/reports/book.html:35 reports/templates/reports/orders.html:52 reports/views.py:340 reports/views.py:373 reports/views.py:398 reports/views.py:448 reports/views.py:467 reports/views.py:496 reports/views.py:555
+#: reports/templates/reports/book.html:35 reports/templates/reports/orders.html:52 reports/views.py:381 reports/views.py:414 reports/views.py:439 reports/views.py:497 reports/views.py:516 reports/views.py:545 reports/views.py:604
 msgid "Copies"
 msgstr ""
 
-#: reports/templates/reports/book.html:36 reports/views.py:338 reports/views.py:374 reports/views.py:399 reports/views.py:468 reports/views.py:497
+#: reports/templates/reports/book.html:36 reports/views.py:379 reports/views.py:415 reports/views.py:440 reports/views.py:517 reports/views.py:546
 msgid "Revenue, UAH"
 msgstr ""
 
@@ -252,7 +312,7 @@ msgstr ""
 msgid "No sales in this period."
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 reports/views.py:265 templates/includes/navbar.html:16
+#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 reports/views.py:304 templates/includes/navbar.html:16
 msgid "Dashboard"
 msgstr ""
 
@@ -272,7 +332,7 @@ msgstr ""
 msgid "Top 10 books"
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:53 reports/templates/reports/dashboard.html:54 reports/views.py:485 templates/includes/navbar.html:25
+#: reports/templates/reports/dashboard.html:53 reports/templates/reports/dashboard.html:54 reports/views.py:534 templates/includes/navbar.html:25
 msgid "Categories"
 msgstr ""
 
@@ -295,7 +355,7 @@ msgstr[1] ""
 msgid "Show"
 msgstr ""
 
-#: reports/templates/reports/events.html:27 reports/templates/reports/events.html:58 reports/templates/reports/orders.html:20 reports/templates/reports/orders.html:50
+#: reports/templates/reports/events.html:27 reports/templates/reports/events.html:58 reports/templates/reports/exports.html:27 reports/templates/reports/orders.html:20 reports/templates/reports/orders.html:50
 msgid "Status"
 msgstr ""
 
@@ -315,7 +375,7 @@ msgstr ""
 msgid "Received"
 msgstr ""
 
-#: reports/templates/reports/events.html:57 reports/templates/reports/orders.html:48 reports/views.py:551
+#: reports/templates/reports/events.html:57 reports/templates/reports/orders.html:48 reports/views.py:600
 msgid "Order"
 msgstr ""
 
@@ -331,12 +391,43 @@ msgstr ""
 msgid "No events found."
 msgstr ""
 
-#: reports/templates/reports/includes/pagination.html:4
-msgid "Pages"
+#: reports/templates/reports/exports.html:4 reports/templates/reports/exports.html:12 templates/includes/navbar.html:36
+msgid "My exports"
 msgstr ""
 
-#: reports/templates/reports/includes/period_filter.html:7
+#: reports/templates/reports/exports.html:14
+#, python-format
+msgid "CSV and XLSX files of the reports. A file is kept for %(days)s day."
+msgid_plural "CSV and XLSX files of the reports. A file is kept for %(days)s days."
+msgstr[0] ""
+msgstr[1] ""
+
+#: reports/templates/reports/exports.html:23 reports/templates/reports/orders.html:49 reports/views.py:601
+msgid "Created"
+msgstr ""
+
+#: reports/templates/reports/exports.html:24
+msgid "Report"
+msgstr ""
+
+#: reports/templates/reports/exports.html:25 reports/templates/reports/includes/period_filter.html:7
 msgid "Period"
+msgstr ""
+
+#: reports/templates/reports/exports.html:28
+msgid "File"
+msgstr ""
+
+#: reports/templates/reports/exports.html:54
+msgid "Download"
+msgstr ""
+
+#: reports/templates/reports/exports.html:62
+msgid "No exports yet. Use the CSV / XLSX buttons on a report page."
+msgstr ""
+
+#: reports/templates/reports/includes/pagination.html:4
+msgid "Pages"
 msgstr ""
 
 #: reports/templates/reports/includes/period_filter.html:12
@@ -370,7 +461,7 @@ msgstr ""
 msgid "vs previous"
 msgstr ""
 
-#: reports/templates/reports/orders.html:4 reports/templates/reports/orders.html:7 reports/views.py:92 reports/views.py:335 templates/includes/navbar.html:32
+#: reports/templates/reports/orders.html:4 reports/templates/reports/orders.html:7 reports/views.py:100 reports/views.py:376 templates/includes/navbar.html:32
 msgid "Orders"
 msgstr ""
 
@@ -382,19 +473,15 @@ msgstr ""
 msgid "Order number"
 msgstr ""
 
-#: reports/templates/reports/orders.html:29 reports/templates/reports/orders.html:51 reports/views.py:554
+#: reports/templates/reports/orders.html:29 reports/templates/reports/orders.html:51 reports/views.py:603
 msgid "Payment"
-msgstr ""
-
-#: reports/templates/reports/orders.html:49 reports/views.py:552
-msgid "Created"
 msgstr ""
 
 #: reports/templates/reports/orders.html:53
 msgid "Total"
 msgstr ""
 
-#: reports/templates/reports/orders.html:54 reports/views.py:556
+#: reports/templates/reports/orders.html:54 reports/views.py:605
 msgid "Total, UAH"
 msgstr ""
 
@@ -402,7 +489,7 @@ msgstr ""
 msgid "No orders found."
 msgstr ""
 
-#: reports/templates/reports/report.html:22
+#: reports/templates/reports/report.html:37
 msgid "Print"
 msgstr ""
 
@@ -410,132 +497,136 @@ msgstr ""
 msgid "Group by"
 msgstr ""
 
-#: reports/templatetags/report_tags.py:56 reports/views.py:298 reports/views.py:507
-msgid "No category"
-msgstr ""
-
-#: reports/views.py:91 reports/views.py:283 reports/views.py:288 reports/views.py:294 reports/views.py:299 reports/views.py:352 reports/views.py:385 reports/views.py:429 reports/views.py:443 reports/views.py:479 reports/views.py:508
+#: reports/views.py:99 reports/views.py:324 reports/views.py:329 reports/views.py:335 reports/views.py:340 reports/views.py:393 reports/views.py:426 reports/views.py:476 reports/views.py:492 reports/views.py:528 reports/views.py:557
 msgid "Revenue"
 msgstr ""
 
-#: reports/views.py:93
+#: reports/views.py:101
 msgid "Average order"
 msgstr ""
 
-#: reports/views.py:94 reports/views.py:430
+#: reports/views.py:102 reports/views.py:477
 msgid "Copies sold"
 msgstr ""
 
-#: reports/views.py:95 reports/views.py:336 sales/models.py:29
+#: reports/views.py:103 reports/views.py:377 sales/models.py:29
 msgid "Paid"
 msgstr ""
 
-#: reports/views.py:96
+#: reports/views.py:104
 msgid "Cancelled orders"
 msgstr ""
 
-#: reports/views.py:97 reports/views.py:337 reports/views.py:553 sales/models.py:24
+#: reports/views.py:105 reports/views.py:378 reports/views.py:602 sales/models.py:24
 msgid "Cancelled"
 msgstr ""
 
-#: reports/views.py:98 reports/views.py:523 reports/views.py:537
+#: reports/views.py:106 reports/views.py:572 reports/views.py:586
 msgid "New customers"
 msgstr ""
 
-#: reports/views.py:99 reports/views.py:524 reports/views.py:538
+#: reports/views.py:107 reports/views.py:573 reports/views.py:587
 msgid "Returning customers"
 msgstr ""
 
-#: reports/views.py:310 reports/views.py:397 reports/views.py:522
+#: reports/views.py:351 reports/views.py:438 reports/views.py:571
 msgid "Day"
 msgstr ""
 
-#: reports/views.py:311
+#: reports/views.py:352
 msgid "Week (from Monday)"
 msgstr ""
 
-#: reports/views.py:312
+#: reports/views.py:353
 msgid "Month"
 msgstr ""
 
-#: reports/views.py:319 sales/apps.py:8 templates/includes/navbar.html:22
+#: reports/views.py:360 sales/apps.py:8 templates/includes/navbar.html:22
 msgid "Sales"
 msgstr ""
 
-#: reports/views.py:320
+#: reports/views.py:361
 msgid "Orders and revenue by day, week or month."
 msgstr ""
 
-#: reports/views.py:339
+#: reports/views.py:380
 msgid "Paid revenue, UAH"
 msgstr ""
 
-#: reports/views.py:341
+#: reports/views.py:382
 msgid "Average order, UAH"
 msgstr ""
 
-#: reports/views.py:353
+#: reports/views.py:394
 msgid "Paid revenue"
 msgstr ""
 
-#: reports/views.py:367
+#: reports/views.py:408
 msgid "Every book sold in the period. Click a title for its own page."
 msgstr ""
 
-#: reports/views.py:371
+#: reports/views.py:412
 msgid "Title"
 msgstr ""
 
-#: reports/views.py:372
+#: reports/views.py:413
 msgid "Author"
 msgstr ""
 
-#: reports/views.py:462
+#: reports/views.py:511
 msgid "Paper books, e-books and audiobooks."
 msgstr ""
 
-#: reports/views.py:469
+#: reports/views.py:518
 msgid "Share of revenue"
 msgstr ""
 
-#: reports/views.py:486
+#: reports/views.py:535
 msgid "Copies and revenue of the books of every category."
 msgstr ""
 
-#: reports/views.py:488
+#: reports/views.py:537
 msgid "A book with several categories is counted in each of them, so the sum of this table can be larger than the total revenue."
 msgstr ""
 
-#: reports/views.py:494
+#: reports/views.py:543
 msgid "Category"
 msgstr ""
 
-#: reports/views.py:514 reports/views.py:525 templates/includes/navbar.html:26
+#: reports/views.py:563 reports/views.py:574 templates/includes/navbar.html:26
 msgid "Customers"
 msgstr ""
 
-#: reports/views.py:516
+#: reports/views.py:565
 msgid "New customers make their first order; returning ones have ordered before. No personal data: a customer is an anonymous key."
 msgstr ""
 
-#: reports/views.py:526
+#: reports/views.py:575
 msgid "Returning share"
 msgstr ""
 
-#: reports/views.py:546 templates/includes/navbar.html:27
+#: reports/views.py:595 templates/includes/navbar.html:27
 msgid "Cancellations"
 msgstr ""
 
-#: reports/views.py:547
+#: reports/views.py:596
 msgid "The share of cancelled orders by day and every cancelled order."
 msgstr ""
 
-#: reports/views.py:557
+#: reports/views.py:606
 msgid "Hours to cancel"
 msgstr ""
 
-#: reports/views.py:570
+#: reports/views.py:619
 msgid "Cancelled, %"
+msgstr ""
+
+#: reports/views.py:750
+msgid "The file is being prepared. It will appear in this list."
+msgstr ""
+
+#: reports/views.py:774
+msgid "Book"
 msgstr ""
 
 #: sales/models.py:20
@@ -564,10 +655,6 @@ msgstr ""
 
 #: sales/models.py:34
 msgid "payment status"
-msgstr ""
-
-#: sales/models.py:37
-msgid "created at"
 msgstr ""
 
 #: sales/models.py:39
@@ -694,32 +781,28 @@ msgstr ""
 msgid "Toggle navigation"
 msgstr ""
 
-#: templates/includes/navbar.html:43
+#: templates/includes/navbar.html:47
 msgid "Admin"
 msgstr ""
 
-#: templates/includes/navbar.html:46
+#: templates/includes/navbar.html:50
 msgid "API"
 msgstr ""
 
-#: templates/includes/navbar.html:58
+#: templates/includes/navbar.html:62
 msgid "Language"
 msgstr ""
 
-#: templates/includes/navbar.html:78
+#: templates/includes/navbar.html:82
 msgid "Log out"
 msgstr ""
 
-#: templates/includes/navbar.html:82 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
+#: templates/includes/navbar.html:86 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
 msgid "Log in"
 msgstr ""
 
 #: users/apps.py:9
 msgid "Users"
-msgstr ""
-
-#: users/models.py:18
-msgid "user"
 msgstr ""
 
 #: users/models.py:19

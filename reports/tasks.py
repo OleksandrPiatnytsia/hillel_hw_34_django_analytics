@@ -2,9 +2,13 @@ import logging
 from datetime import timedelta
 
 from celery import shared_task
+from django.conf import settings
+from django.utils import timezone
 
 from .aggregation import claim_dirty_days, mark_days, rebuild_days
 from .days import today
+from .exports import run_export
+from .models import ReportExport
 
 logger = logging.getLogger(__name__)  # "reports.tasks"
 
@@ -39,3 +43,19 @@ def close_yesterday():
     yesterday = today() - timedelta(days=1)
     rebuild_days([yesterday])
     return str(yesterday)
+
+
+@shared_task
+def generate_export(export_id):
+    """Make the CSV / XLSX file of one export (started by the report page)."""
+    export = run_export(export_id)
+    return export.status
+
+
+@shared_task
+def delete_old_exports():
+    """Every night: the files older than EXPORTS_KEEP_DAYS out of the database."""
+    border = timezone.now() - timedelta(days=settings.EXPORTS_KEEP_DAYS)
+    deleted, _details = ReportExport.objects.filter(created_at__lt=border).delete()
+    logger.info("Old exports deleted: %d", deleted)
+    return deleted
