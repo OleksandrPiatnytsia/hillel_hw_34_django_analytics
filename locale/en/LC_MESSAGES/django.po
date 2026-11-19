@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 19:51+0000\n"
+"POT-Creation-Date: 2026-11-19 19:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: English\n"
@@ -66,11 +66,11 @@ msgstr ""
 msgid "books"
 msgstr ""
 
-#: config/settings/base.py:305
+#: config/settings/base.py:311
 msgid "Ukrainian"
 msgstr ""
 
-#: config/settings/base.py:306
+#: config/settings/base.py:312
 msgid "English"
 msgstr ""
 
@@ -296,7 +296,7 @@ msgstr ""
 msgid "Books"
 msgstr ""
 
-#: reports/templates/reports/book.html:23 reports/templates/reports/book.html:27 reports/templates/reports/dashboard.html:45 reports/templates/reports/dashboard.html:46 reports/views.py:510 templates/includes/navbar.html:24
+#: reports/templates/reports/book.html:23 reports/templates/reports/book.html:27 reports/templates/reports/dashboard.html:45 reports/templates/reports/dashboard.html:46 reports/templates/reports/emails/daily_sales.txt:16 reports/views.py:510 templates/includes/navbar.html:24
 msgid "Formats"
 msgstr ""
 
@@ -312,11 +312,11 @@ msgstr ""
 msgid "Revenue, UAH"
 msgstr ""
 
-#: reports/templates/reports/book.html:47 reports/templates/reports/includes/table.html:31
+#: reports/templates/reports/book.html:47 reports/templates/reports/emails/daily_sales.txt:14 reports/templates/reports/emails/daily_sales.txt:18 reports/templates/reports/includes/table.html:31
 msgid "No sales in this period."
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 reports/views.py:304 templates/includes/navbar.html:16
+#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 reports/templates/reports/emails/daily_sales.txt:21 reports/views.py:304 templates/includes/navbar.html:16
 msgid "Dashboard"
 msgstr ""
 
@@ -332,12 +332,70 @@ msgstr ""
 msgid "Revenue by day"
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:37 reports/templates/reports/dashboard.html:38
+#: reports/templates/reports/dashboard.html:37 reports/templates/reports/dashboard.html:38 reports/templates/reports/emails/daily_sales.txt:12
 msgid "Top 10 books"
 msgstr ""
 
 #: reports/templates/reports/dashboard.html:53 reports/templates/reports/dashboard.html:54 reports/views.py:534 templates/includes/navbar.html:25
 msgid "Categories"
+msgstr ""
+
+#: reports/templates/reports/emails/change.txt:1 reports/templates/reports/includes/tiles.html:18
+msgid "new"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:1
+#, python-format
+msgid "Bookstore sales of %(day)s (a day in Kyiv)."
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:2
+msgid "In brackets: the change against the day before."
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:4 reports/templates/reports/orders.html:4 reports/templates/reports/orders.html:7 reports/views.py:100 reports/views.py:376 templates/includes/navbar.html:32
+msgid "Orders"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:5 reports/views.py:99 reports/views.py:324 reports/views.py:329 reports/views.py:335 reports/views.py:340 reports/views.py:393 reports/views.py:426 reports/views.py:476 reports/views.py:492 reports/views.py:528 reports/views.py:557
+msgid "Revenue"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:5 reports/templates/reports/emails/daily_sales.txt:6 reports/templates/reports/emails/daily_sales.txt:13 reports/templates/reports/emails/daily_sales.txt:17
+msgid "UAH"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:6 reports/views.py:101
+msgid "Average order"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:7 reports/views.py:102 reports/views.py:477
+msgid "Copies sold"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:8 reports/views.py:103 reports/views.py:377 sales/models.py:29
+msgid "Paid"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:9 reports/views.py:105 reports/views.py:378 reports/views.py:602 sales/models.py:24
+msgid "Cancelled"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:10 reports/views.py:106 reports/views.py:572 reports/views.py:586
+msgid "New customers"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:13 reports/templates/reports/emails/daily_sales.txt:17
+msgid "copies"
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales.txt:20
+msgid "Attached: the books and the formats of the day as CSV (opens in Excel)."
+msgstr ""
+
+#: reports/templates/reports/emails/daily_sales_subject.txt:1
+#, python-format
+msgid "Sales of %(day)s: %(revenue)s UAH"
 msgstr ""
 
 #: reports/templates/reports/events.html:11
@@ -457,16 +515,8 @@ msgstr ""
 msgid "Previous period"
 msgstr ""
 
-#: reports/templates/reports/includes/tiles.html:18
-msgid "new"
-msgstr ""
-
 #: reports/templates/reports/includes/tiles.html:20
 msgid "vs previous"
-msgstr ""
-
-#: reports/templates/reports/orders.html:4 reports/templates/reports/orders.html:7 reports/views.py:100 reports/views.py:376 templates/includes/navbar.html:32
-msgid "Orders"
 msgstr ""
 
 #: reports/templates/reports/orders.html:9
@@ -501,32 +551,8 @@ msgstr ""
 msgid "Group by"
 msgstr ""
 
-#: reports/views.py:99 reports/views.py:324 reports/views.py:329 reports/views.py:335 reports/views.py:340 reports/views.py:393 reports/views.py:426 reports/views.py:476 reports/views.py:492 reports/views.py:528 reports/views.py:557
-msgid "Revenue"
-msgstr ""
-
-#: reports/views.py:101
-msgid "Average order"
-msgstr ""
-
-#: reports/views.py:102 reports/views.py:477
-msgid "Copies sold"
-msgstr ""
-
-#: reports/views.py:103 reports/views.py:377 sales/models.py:29
-msgid "Paid"
-msgstr ""
-
 #: reports/views.py:104
 msgid "Cancelled orders"
-msgstr ""
-
-#: reports/views.py:105 reports/views.py:378 reports/views.py:602 sales/models.py:24
-msgid "Cancelled"
-msgstr ""
-
-#: reports/views.py:106 reports/views.py:572 reports/views.py:586
-msgid "New customers"
 msgstr ""
 
 #: reports/views.py:107 reports/views.py:573 reports/views.py:587

@@ -155,8 +155,20 @@ Interface: Django templates + Bootstrap 5 + **Chart.js** (CDN, no frontend build
    users.use_reports_api, now given to Analysts too (Swagger with the site session); throttle
    scope "reports" 120/minute per account; answers cached with the reports version (real
    dates in the key); money = strings with 2 decimals; schema passes spectacular
-   --validate --fail-on-warn.
-5. A: analytics page via B's REST + backfill; integration tests on both sides.
+   --validate --fail-on-warn. 4.4 committed.
+   4.5 code written 2026-11-19: reports/emails.py + beat "daily-sales-email" 06:00 UTC
+   (task send_daily_sales_email: rebuilds the day and the day before, then one plain-text
+   email in LANGUAGE_CODE to the active Analysts with an email, Bcc; totals with the change
+   against the day before, top 10 books, formats; attachments books_<day>.csv and
+   formats_<day>.csv built by the report classes like the exports; autoretry on OSError /
+   AnymailError, 3 retries with backoff). Email settings = the bookstore's (MAILERS: Brevo
+   via django-anymail 15.2 -> Gmail SMTP -> console; EMAIL_FROM, SITE_URL default
+   http://localhost:8010; production refuses BREVO_API_KEY without EMAIL_FROM).
+   Stage 4 complete after the 4.5 commit.
+5. A: analytics page via B's REST + backfill; integration tests on both sides. Also in A:
+   remove the sales part (orders, top books) from A's daily email "daily-sales-report"; the
+   low-stock part stays. B's API for A: /api/reports/{summary,daily,top-books,formats}/ with
+   ?period= or ?from=&to=, JWT of a Services account (see 4.4).
 6. CI/CD, Railway deploy, README with the architecture diagram, Swagger.
 
 Present the detailed plan of a stage to the user before coding it.

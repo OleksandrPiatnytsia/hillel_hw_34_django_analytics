@@ -1,0 +1,1 @@
+{% load i18n report_tags %}{% blocktranslate with day=day|date:"SHORT_DATE_FORMAT" revenue=totals.revenue_uah|money %}Sales of {{ day }}: {{ revenue }} UAH{% endblocktranslate %}

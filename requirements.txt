@@ -28,3 +28,5 @@ djangorestframework-simplejwt==5.5.1
 drf-spectacular==0.30.0
 # XLSX files of the report exports (reports/exports.py)
 openpyxl==3.1.5
+# Email through the Brevo HTTP API (Railway blocks SMTP); MAILERS in base.py
+django-anymail==15.2

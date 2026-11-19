@@ -1,0 +1,22 @@
+{% load i18n report_tags %}{% autoescape off %}{# Plain text: no HTML escaping of book titles like "Tom & Jerry" #}{% blocktranslate with day=day|date:"SHORT_DATE_FORMAT" %}Bookstore sales of {{ day }} (a day in Kyiv).{% endblocktranslate %}
+{% translate "In brackets: the change against the day before." %}
+
+{% translate "Orders" %}: {{ totals.orders }} ({{ changes.orders|change_text }})
+{% translate "Revenue" %}: {{ totals.revenue_uah|money }} {% translate "UAH" %} ({{ changes.revenue_uah|change_text }})
+{% translate "Average order" %}: {{ totals.average_order_uah|money }} {% translate "UAH" %} ({{ changes.average_order_uah|change_text }})
+{% translate "Copies sold" %}: {{ totals.items_sold }} ({{ changes.items_sold|change_text }})
+{% translate "Paid" %}: {{ totals.paid_share|floatformat:1 }}% ({{ changes.paid_share|change_text }})
+{% translate "Cancelled" %}: {{ totals.cancelled_orders }}, {{ totals.cancelled_share|floatformat:1 }}% ({{ changes.cancelled_share|change_text }})
+{% translate "New customers" %}: {{ totals.new_customers }} ({{ changes.new_customers|change_text }})
+
+{% translate "Top 10 books" %}:
+{% for book in top_books %}{{ forloop.counter }}. {{ book.title }} — {{ book.quantity }} {% translate "copies" %}, {{ book.revenue_uah|money }} {% translate "UAH" %}
+{% empty %}{% translate "No sales in this period." %}
+{% endfor %}
+{% translate "Formats" %}:
+{% for row in formats %}- {{ row.format_type|format_value:"format" }}: {{ row.quantity }} {% translate "copies" %}, {{ row.revenue_uah|money }} {% translate "UAH" %} ({{ row.revenue_share|floatformat:1 }}%)
+{% empty %}{% translate "No sales in this period." %}
+{% endfor %}
+{% translate "Attached: the books and the formats of the day as CSV (opens in Excel)." %}
+{% translate "Dashboard" %}: {{ dashboard_url }}
+{% endautoescape %}

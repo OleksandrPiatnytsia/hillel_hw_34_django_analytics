@@ -92,3 +92,43 @@ def test_deployed_commit_comes_from_railway_or_app_commit(monkeypatch):
 
     monkeypatch.setenv("RAILWAY_GIT_COMMIT_SHA", "def")
     assert deployed_commit() == "def"
+
+
+# The mailer of the daily sales email: Brevo, Gmail or the console.
+# Every email variable is given (empty or not): a value from a local .env
+# must not decide the result (load_dotenv never overrides a set variable).
+NO_EMAIL = {"BREVO_API_KEY": "", "EMAIL_FROM": "", "EMAIL_HOST_USER": "", "EMAIL_HOST_PASSWORD": ""}
+
+
+def test_brevo_needs_a_sender(monkeypatch):
+    with pytest.raises(ImproperlyConfigured, match="EMAIL_FROM"):
+        load_production(
+            monkeypatch,
+            DJANGO_ALLOWED_HOSTS="analytics.example.com",
+            **{**NO_EMAIL, "BREVO_API_KEY": "xkeysib-test"},
+        )
+
+
+@pytest.mark.parametrize(
+    "variables, backend, sender",
+    [
+        (
+            {"BREVO_API_KEY": "xkeysib-test", "EMAIL_FROM": "reports@example.com"},
+            "anymail.backends.brevo.EmailBackend",
+            "reports@example.com",
+        ),
+        (
+            {"EMAIL_HOST_USER": "me@gmail.com", "EMAIL_HOST_PASSWORD": "abcd efgh ijkl mnop"},
+            "django.core.mail.backends.smtp.EmailBackend",
+            "me@gmail.com",
+        ),
+        ({}, "django.core.mail.backends.console.EmailBackend", "noreply@localhost"),
+    ],
+)
+def test_mailer_choice(monkeypatch, variables, backend, sender):
+    production = load_production(
+        monkeypatch, DJANGO_ALLOWED_HOSTS="analytics.example.com", **{**NO_EMAIL, **variables}
+    )
+
+    assert production.MAILERS["default"]["BACKEND"] == backend
+    assert production.DEFAULT_FROM_EMAIL == f"Bookstore analytics <{sender}>"

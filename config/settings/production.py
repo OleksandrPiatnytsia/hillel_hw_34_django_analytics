@@ -25,7 +25,7 @@ from config.env import env_bool, env_list
 # F401 + F403: flake8 can't see which names come from "*"; settings modules
 # are read by Django, nothing here uses them by name
 from .base import *  # noqa: F401, F403
-from .base import ALLOWED_HOSTS, MIDDLEWARE, STORAGES
+from .base import ALLOWED_HOSTS, BREVO_API_KEY, EMAIL_FROM, MIDDLEWARE, STORAGES
 
 DEBUG = False
 
@@ -153,3 +153,12 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# Brevo sends only from a sender confirmed in its account: without
+# EMAIL_FROM every daily email would be refused ("sender not valid").
+# Better to stop at start with a clear message.
+if BREVO_API_KEY and EMAIL_FROM == "noreply@localhost":
+    raise ImproperlyConfigured(
+        "BREVO_API_KEY is set, but EMAIL_FROM is empty: set the sender address "
+        "confirmed in Brevo (Senders, Domains & Dedicated IPs -> Senders)"
+    )

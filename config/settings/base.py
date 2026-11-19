@@ -248,6 +248,12 @@ CELERY_BEAT_SCHEDULE = {
         "task": "reports.tasks.delete_old_exports",
         "schedule": crontab(hour=3, minute=30),
     },
+    # Yesterday's sales -> email to the Analysts, at 06:00 UTC = 08:00 / 09:00
+    # in Kyiv, long after close-yesterday (01:00)
+    "daily-sales-email": {
+        "task": "reports.tasks.send_daily_sales_email",
+        "schedule": crontab(hour=6, minute=0),
+    },
 }
 
 # The files of the report exports live in the database (reports.ReportExport):
@@ -405,6 +411,68 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": True,
     },
 }
+
+
+# Email
+# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+#
+# The daily sales email to the Analysts (reports/emails.py). The same
+# variables and the same choice as in the bookstore, so one .env setup
+# works for both services.
+#
+# Django 6.1: MAILERS replaces the old EMAIL_BACKEND / EMAIL_HOST / ...
+# settings. Tests don't send real emails: the test runner replaces every
+# mailer with the locmem backend (mail.outbox).
+#
+# Which mailer, the first one that is configured:
+#   1. Brevo HTTP API (BREVO_API_KEY): Railway, where outgoing SMTP is
+#      blocked but HTTPS to an API goes through (django-anymail).
+#   2. Gmail SMTP (EMAIL_HOST_USER + EMAIL_HOST_PASSWORD): local runs.
+#   3. The console: emails are printed to the log, nothing is sent.
+BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
+# Gmail: the address and an App Password (Google account -> Security ->
+# 2-Step Verification -> App passwords), not the account password
+EMAIL_USER = os.getenv("EMAIL_HOST_USER", "")
+# Google shows the password in groups "abcd efgh ijkl mnop"; spaces out
+EMAIL_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "").replace(" ", "")
+
+if BREVO_API_KEY:
+    MAILERS = {
+        "default": {
+            "BACKEND": "anymail.backends.brevo.EmailBackend",
+            "OPTIONS": {"api_key": BREVO_API_KEY},
+        },
+    }
+elif EMAIL_USER and EMAIL_PASSWORD:
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+            "OPTIONS": {
+                "host": "smtp.gmail.com",
+                # 587 + use_tls: plain connection, then STARTTLS before the login
+                "port": 587,
+                "use_tls": True,
+                "username": EMAIL_USER,
+                "password": EMAIL_PASSWORD,
+                # Seconds: a stuck connection must not hang the Celery task
+                "timeout": 10,
+            },
+        },
+    }
+else:
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.console.EmailBackend",
+        },
+    }
+
+# "From": the sender confirmed in Brevo, else the Gmail login (Gmail sends
+# only from the account it logs in with), else a placeholder for the console
+EMAIL_FROM = os.getenv("EMAIL_FROM", "") or EMAIL_USER or "noreply@localhost"
+DEFAULT_FROM_EMAIL = f"Bookstore analytics <{EMAIL_FROM}>"
+
+# Address of this site for the links in the emails
+SITE_URL = os.getenv("SITE_URL", "http://localhost:8010").rstrip("/")
 
 
 # Logging

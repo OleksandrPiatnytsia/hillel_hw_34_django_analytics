@@ -59,6 +59,15 @@ def format_value(value, kind):
     return "" if value is None else value
 
 
+@register.filter
+def change_text(change):
+    """A comparison (reports/periods.py compare) as "+12,5%", "new" or "—"."""
+    if change["percent"] is not None:
+        sign = "+" if change["percent"] > 0 else ""
+        return f"{sign}{floatformat(change['percent'], 1)}%"
+    return _("new") if change["value"] else "—"
+
+
 @register.simple_tag(takes_context=True)
 def report_cell(context, row, column):
     value = row.get(column.key)

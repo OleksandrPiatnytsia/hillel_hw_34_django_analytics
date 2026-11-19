@@ -1,12 +1,14 @@
 import logging
-from datetime import timedelta
+from datetime import date, timedelta
 
+from anymail.exceptions import AnymailError
 from celery import shared_task
 from django.conf import settings
 from django.utils import timezone
 
 from .aggregation import claim_dirty_days, mark_days, rebuild_days
 from .days import today
+from .emails import send_daily_sales_email as send_email
 from .exports import run_export
 from .models import ReportExport
 
@@ -59,3 +61,27 @@ def delete_old_exports():
     deleted, _details = ReportExport.objects.filter(created_at__lt=border).delete()
     logger.info("Old exports deleted: %d", deleted)
     return deleted
+
+
+# An SMTP error (smtplib errors are OSError) or a Brevo API error (a network
+# hiccup, Brevo down for a minute): try again in 1, 2, 4 minutes. A retry
+# after a half-sent email may send it twice; a duplicate report is better
+# than none.
+@shared_task(
+    bind=True,
+    autoretry_for=(OSError, AnymailError),
+    retry_backoff=60,
+    retry_kwargs={"max_retries": 3},
+)
+def send_daily_sales_email(self, day=None):
+    """Every morning: yesterday's sales to the Analysts.
+
+    day (YYYY-MM-DD) only for a manual resend:
+        send_daily_sales_email.delay("2026-11-18")
+    The day and the day before (the comparison of the email) are
+    recalculated first, so the email never depends on whether
+    close_yesterday has already run.
+    """
+    day = date.fromisoformat(day) if day else today() - timedelta(days=1)
+    rebuild_days([day - timedelta(days=1), day])
+    return send_email(day)
