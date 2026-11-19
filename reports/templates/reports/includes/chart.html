@@ -1,0 +1,8 @@
+{# One Chart.js chart: the canvas + its data as JSON (json_script escapes #}
+{# it safely); static/js/reports.js draws every canvas[data-chart] #}
+{% with chart_id="chart-"|add:name %}
+  <div class="chart-box{% if small %} chart-box-small{% endif %}">
+    <canvas data-chart="{{ chart_id }}" role="img" aria-label="{{ label }}"></canvas>
+  </div>
+  {{ spec|json_script:chart_id }}
+{% endwith %}

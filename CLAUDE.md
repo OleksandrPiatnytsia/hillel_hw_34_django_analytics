@@ -133,7 +133,13 @@ Interface: Django templates + Bootstrap 5 + **Chart.js** (CDN, no frontend build
    size limit: Railway web and worker share no disk); categories: a book counts in each of
    its categories, a note under the table says the sum exceeds the total.
    4.1 code written 2026-11-19 (reports/models.py, aggregation.py, cache.py, tasks.py,
-   command rebuild_reports).
+   command rebuild_reports), committed. 4.2 code written 2026-11-19: reports/periods.py
+   (?period=7|30|90 or ?from=&to=, max 366 days, previous period of the same length),
+   reports/queries.py (plain data, reused by exports and REST), reports/views.py
+   (ReportBaseView: Column / Tile dataclasses, sort + pagination over cached rows, ?print=1 =
+   all rows + print dialog; cache keys hold real dates, not "period=30"), templatetags
+   report_tags (format_value, report_cell, kyiv), Chart.js 4.6.1 via static/js/reports.js;
+   events journal needs events.view_event (superusers), not Analysts.
 5. A: analytics page via B's REST + backfill; integration tests on both sides.
 6. CI/CD, Railway deploy, README with the architecture diagram, Swagger.
 

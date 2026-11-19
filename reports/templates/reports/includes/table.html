@@ -1,0 +1,37 @@
+{% load i18n report_tags %}
+{# The table of a report: a click on a header sorts by it (again: the other way) #}
+<div class="table-responsive">
+  <table class="table table-sm table-hover align-middle mb-0">
+    <thead>
+      <tr>
+        {% for header in headers %}
+          <th scope="col" class="{% if header.column.numeric %}text-end{% endif %}"
+              {% if header.state %}aria-sort="{% if header.state == 'asc' %}ascending{% else %}descending{% endif %}"{% endif %}>
+            {% if header.column.sortable and not printing %}
+              <a class="link-body-emphasis text-decoration-none"
+                 href="{% querystring sort=header.next_sort page=None %}">
+                {{ header.column.label }}{% if header.state == "asc" %} ▲{% elif header.state == "desc" %} ▼{% endif %}
+              </a>
+            {% else %}
+              {{ header.column.label }}
+            {% endif %}
+          </th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+        <tr>
+          {% for header in headers %}
+            <td class="{% if header.column.numeric %}text-end text-nowrap{% endif %}">{% report_cell row header.column %}</td>
+          {% endfor %}
+        </tr>
+      {% empty %}
+        <tr><td colspan="{{ headers|length }}" class="text-center text-body-secondary py-4">
+          {% translate "No sales in this period." %}
+        </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "reports/includes/pagination.html" %}

@@ -6,4 +6,13 @@ app_name = "reports"
 
 urlpatterns = [
     path("", views.DashboardView.as_view(), name="dashboard"),
+    path("reports/sales/", views.SalesReportView.as_view(), name="sales"),
+    path("reports/books/", views.BooksReportView.as_view(), name="books"),
+    path("reports/books/<int:pk>/", views.BookReportView.as_view(), name="book"),
+    path("reports/formats/", views.FormatsReportView.as_view(), name="formats"),
+    path("reports/categories/", views.CategoriesReportView.as_view(), name="categories"),
+    path("reports/customers/", views.CustomersReportView.as_view(), name="customers"),
+    path("reports/cancellations/", views.CancellationsReportView.as_view(), name="cancellations"),
+    path("orders/", views.OrderListView.as_view(), name="orders"),
+    path("events/", views.EventListView.as_view(), name="events"),
 ]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:29+0000\n"
+"POT-Creation-Date: 2026-11-19 18:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: English\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: events/apps.py:8
+#: events/apps.py:8 reports/templates/reports/events.html:4 reports/templates/reports/events.html:9 templates/includes/navbar.html:37
 msgid "Events"
 msgstr ""
 
@@ -138,7 +138,7 @@ msgstr ""
 msgid "events"
 msgstr ""
 
-#: reports/apps.py:8
+#: reports/apps.py:8 templates/includes/navbar.html:20
 msgid "Reports"
 msgstr ""
 
@@ -210,20 +210,332 @@ msgstr ""
 msgid "days to recalculate"
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 templates/includes/navbar.html:16
+#: reports/periods.py:75
+#, python-format
+msgid "Unknown period: %(value)s."
+msgstr ""
+
+#: reports/periods.py:84
+msgid "Enter both dates as YYYY-MM-DD."
+msgstr ""
+
+#: reports/periods.py:86
+msgid "The start of the period is later than its end."
+msgstr ""
+
+#: reports/periods.py:90
+#, python-format
+msgid "The period is too long: at most %(days)d days."
+msgstr ""
+
+#: reports/templates/reports/book.html:7 reports/views.py:366 reports/views.py:495 templates/includes/navbar.html:23
+msgid "Books"
+msgstr ""
+
+#: reports/templates/reports/book.html:23 reports/templates/reports/book.html:27 reports/templates/reports/dashboard.html:45 reports/templates/reports/dashboard.html:46 reports/views.py:461 templates/includes/navbar.html:24
+msgid "Formats"
+msgstr ""
+
+#: reports/templates/reports/book.html:34 reports/views.py:466
+msgid "Format"
+msgstr ""
+
+#: reports/templates/reports/book.html:35 reports/templates/reports/orders.html:52 reports/views.py:340 reports/views.py:373 reports/views.py:398 reports/views.py:448 reports/views.py:467 reports/views.py:496 reports/views.py:555
+msgid "Copies"
+msgstr ""
+
+#: reports/templates/reports/book.html:36 reports/views.py:338 reports/views.py:374 reports/views.py:399 reports/views.py:468 reports/views.py:497
+msgid "Revenue, UAH"
+msgstr ""
+
+#: reports/templates/reports/book.html:47 reports/templates/reports/includes/table.html:31
+msgid "No sales in this period."
+msgstr ""
+
+#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 reports/views.py:265 templates/includes/navbar.html:16
 msgid "Dashboard"
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:14
+#: reports/templates/reports/dashboard.html:15
 msgid "No data yet"
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:16
+#: reports/templates/reports/dashboard.html:17
 msgid "Sales figures will appear here once the bookstore starts sending its order events."
 msgstr ""
 
-#: sales/apps.py:8
+#: reports/templates/reports/dashboard.html:29 reports/templates/reports/dashboard.html:30
+msgid "Revenue by day"
+msgstr ""
+
+#: reports/templates/reports/dashboard.html:37 reports/templates/reports/dashboard.html:38
+msgid "Top 10 books"
+msgstr ""
+
+#: reports/templates/reports/dashboard.html:53 reports/templates/reports/dashboard.html:54 reports/views.py:485 templates/includes/navbar.html:25
+msgid "Categories"
+msgstr ""
+
+#: reports/templates/reports/events.html:11
+msgid "Every event that came from the bookstore, newest first."
+msgstr ""
+
+#: reports/templates/reports/events.html:14
+msgid "Open in the admin"
+msgstr ""
+
+#: reports/templates/reports/events.html:19
+#, python-format
+msgid "%(counter)s event failed: its message is in the dead letter queue."
+msgid_plural "%(counter)s events failed: their messages are in the dead letter queue."
+msgstr[0] ""
+msgstr[1] ""
+
+#: reports/templates/reports/events.html:20 reports/templates/reports/events.html:44 reports/templates/reports/includes/period_filter.html:31 reports/templates/reports/orders.html:37
+msgid "Show"
+msgstr ""
+
+#: reports/templates/reports/events.html:27 reports/templates/reports/events.html:58 reports/templates/reports/orders.html:20 reports/templates/reports/orders.html:50
+msgid "Status"
+msgstr ""
+
+#: reports/templates/reports/events.html:29 reports/templates/reports/events.html:38 reports/templates/reports/orders.html:22 reports/templates/reports/orders.html:31
+msgid "All"
+msgstr ""
+
+#: reports/templates/reports/events.html:36 reports/templates/reports/events.html:56
+msgid "Type"
+msgstr ""
+
+#: reports/templates/reports/events.html:45 reports/templates/reports/orders.html:38
+msgid "Reset"
+msgstr ""
+
+#: reports/templates/reports/events.html:55
+msgid "Received"
+msgstr ""
+
+#: reports/templates/reports/events.html:57 reports/templates/reports/orders.html:48 reports/views.py:551
+msgid "Order"
+msgstr ""
+
+#: reports/templates/reports/events.html:59
+msgid "Event id"
+msgstr ""
+
+#: reports/templates/reports/events.html:60
+msgid "Error"
+msgstr ""
+
+#: reports/templates/reports/events.html:78
+msgid "No events found."
+msgstr ""
+
+#: reports/templates/reports/includes/pagination.html:4
+msgid "Pages"
+msgstr ""
+
+#: reports/templates/reports/includes/period_filter.html:7
+msgid "Period"
+msgstr ""
+
+#: reports/templates/reports/includes/period_filter.html:12
+#, python-format
+msgid "%(days)s day"
+msgid_plural "%(days)s days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: reports/templates/reports/includes/period_filter.html:22
+msgid "From"
+msgstr ""
+
+#: reports/templates/reports/includes/period_filter.html:27
+msgid "To"
+msgstr ""
+
+#: reports/templates/reports/includes/period_filter.html:37
+msgid "compared with"
+msgstr ""
+
+#: reports/templates/reports/includes/tiles.html:13
+msgid "Previous period"
+msgstr ""
+
+#: reports/templates/reports/includes/tiles.html:18
+msgid "new"
+msgstr ""
+
+#: reports/templates/reports/includes/tiles.html:20
+msgid "vs previous"
+msgstr ""
+
+#: reports/templates/reports/orders.html:4 reports/templates/reports/orders.html:7 reports/views.py:92 reports/views.py:335 templates/includes/navbar.html:32
+msgid "Orders"
+msgstr ""
+
+#: reports/templates/reports/orders.html:9
+msgid "The orders as the bookstore's events described them. No personal data: a customer is an anonymous key."
+msgstr ""
+
+#: reports/templates/reports/orders.html:15
+msgid "Order number"
+msgstr ""
+
+#: reports/templates/reports/orders.html:29 reports/templates/reports/orders.html:51 reports/views.py:554
+msgid "Payment"
+msgstr ""
+
+#: reports/templates/reports/orders.html:49 reports/views.py:552
+msgid "Created"
+msgstr ""
+
+#: reports/templates/reports/orders.html:53
+msgid "Total"
+msgstr ""
+
+#: reports/templates/reports/orders.html:54 reports/views.py:556
+msgid "Total, UAH"
+msgstr ""
+
+#: reports/templates/reports/orders.html:73
+msgid "No orders found."
+msgstr ""
+
+#: reports/templates/reports/report.html:22
+msgid "Print"
+msgstr ""
+
+#: reports/templates/reports/sales.html:5
+msgid "Group by"
+msgstr ""
+
+#: reports/templatetags/report_tags.py:56 reports/views.py:298 reports/views.py:507
+msgid "No category"
+msgstr ""
+
+#: reports/views.py:91 reports/views.py:283 reports/views.py:288 reports/views.py:294 reports/views.py:299 reports/views.py:352 reports/views.py:385 reports/views.py:429 reports/views.py:443 reports/views.py:479 reports/views.py:508
+msgid "Revenue"
+msgstr ""
+
+#: reports/views.py:93
+msgid "Average order"
+msgstr ""
+
+#: reports/views.py:94 reports/views.py:430
+msgid "Copies sold"
+msgstr ""
+
+#: reports/views.py:95 reports/views.py:336 sales/models.py:29
+msgid "Paid"
+msgstr ""
+
+#: reports/views.py:96
+msgid "Cancelled orders"
+msgstr ""
+
+#: reports/views.py:97 reports/views.py:337 reports/views.py:553 sales/models.py:24
+msgid "Cancelled"
+msgstr ""
+
+#: reports/views.py:98 reports/views.py:523 reports/views.py:537
+msgid "New customers"
+msgstr ""
+
+#: reports/views.py:99 reports/views.py:524 reports/views.py:538
+msgid "Returning customers"
+msgstr ""
+
+#: reports/views.py:310 reports/views.py:397 reports/views.py:522
+msgid "Day"
+msgstr ""
+
+#: reports/views.py:311
+msgid "Week (from Monday)"
+msgstr ""
+
+#: reports/views.py:312
+msgid "Month"
+msgstr ""
+
+#: reports/views.py:319 sales/apps.py:8 templates/includes/navbar.html:22
 msgid "Sales"
+msgstr ""
+
+#: reports/views.py:320
+msgid "Orders and revenue by day, week or month."
+msgstr ""
+
+#: reports/views.py:339
+msgid "Paid revenue, UAH"
+msgstr ""
+
+#: reports/views.py:341
+msgid "Average order, UAH"
+msgstr ""
+
+#: reports/views.py:353
+msgid "Paid revenue"
+msgstr ""
+
+#: reports/views.py:367
+msgid "Every book sold in the period. Click a title for its own page."
+msgstr ""
+
+#: reports/views.py:371
+msgid "Title"
+msgstr ""
+
+#: reports/views.py:372
+msgid "Author"
+msgstr ""
+
+#: reports/views.py:462
+msgid "Paper books, e-books and audiobooks."
+msgstr ""
+
+#: reports/views.py:469
+msgid "Share of revenue"
+msgstr ""
+
+#: reports/views.py:486
+msgid "Copies and revenue of the books of every category."
+msgstr ""
+
+#: reports/views.py:488
+msgid "A book with several categories is counted in each of them, so the sum of this table can be larger than the total revenue."
+msgstr ""
+
+#: reports/views.py:494
+msgid "Category"
+msgstr ""
+
+#: reports/views.py:514 reports/views.py:525 templates/includes/navbar.html:26
+msgid "Customers"
+msgstr ""
+
+#: reports/views.py:516
+msgid "New customers make their first order; returning ones have ordered before. No personal data: a customer is an anonymous key."
+msgstr ""
+
+#: reports/views.py:526
+msgid "Returning share"
+msgstr ""
+
+#: reports/views.py:546 templates/includes/navbar.html:27
+msgid "Cancellations"
+msgstr ""
+
+#: reports/views.py:547
+msgid "The share of cancelled orders by day and every cancelled order."
+msgstr ""
+
+#: reports/views.py:557
+msgid "Hours to cancel"
+msgstr ""
+
+#: reports/views.py:570
+msgid "Cancelled, %"
 msgstr ""
 
 #: sales/models.py:20
@@ -242,20 +554,12 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: sales/models.py:24
-msgid "Cancelled"
-msgstr ""
-
 #: sales/models.py:27
 msgid "Unpaid"
 msgstr ""
 
 #: sales/models.py:28
 msgid "Partially paid"
-msgstr ""
-
-#: sales/models.py:29
-msgid "Paid"
 msgstr ""
 
 #: sales/models.py:34
@@ -390,23 +694,23 @@ msgstr ""
 msgid "Toggle navigation"
 msgstr ""
 
-#: templates/includes/navbar.html:20
+#: templates/includes/navbar.html:43
 msgid "Admin"
 msgstr ""
 
-#: templates/includes/navbar.html:23
+#: templates/includes/navbar.html:46
 msgid "API"
 msgstr ""
 
-#: templates/includes/navbar.html:35
+#: templates/includes/navbar.html:58
 msgid "Language"
 msgstr ""
 
-#: templates/includes/navbar.html:55
+#: templates/includes/navbar.html:78
 msgid "Log out"
 msgstr ""
 
-#: templates/includes/navbar.html:59 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
+#: templates/includes/navbar.html:82 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
 msgid "Log in"
 msgstr ""
 

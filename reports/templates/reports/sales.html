@@ -1,0 +1,12 @@
+{% extends "reports/report.html" %}
+{% load i18n %}
+
+{% block filters %}
+<div class="btn-group mb-4 d-print-none" role="group" aria-label="{% translate 'Group by' %}">
+  {% for key, label in groups %}
+    <a class="btn btn-sm btn-outline-secondary{% if key == group %} active{% endif %}"
+       {% if key == group %}aria-current="true"{% endif %}
+       href="{% querystring group=key page=None %}">{{ label }}</a>
+  {% endfor %}
+</div>
+{% endblock %}

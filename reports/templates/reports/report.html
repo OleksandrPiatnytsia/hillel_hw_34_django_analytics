@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{# Every report page (reports/views.py ReportBaseView): the period, the #}
+{# tiles, the chart, the table. A report changes only its blocks. #}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-start gap-2 mb-3">
+  <div class="me-auto">
+    {% block heading %}
+      <h1 class="h3 mb-1">{{ title }}</h1>
+      {% if description %}<p class="text-body-secondary mb-0">{{ description }}</p>{% endif %}
+    {% endblock %}
+    {# On paper: which period the numbers are of (the filter card is not printed) #}
+    <p class="d-none d-print-block mb-0">
+      {{ period.first|date:"SHORT_DATE_FORMAT" }} – {{ period.last|date:"SHORT_DATE_FORMAT" }}
+    </p>
+  </div>
+  <div class="d-print-none">
+    {# All the rows on one page, then the print dialog (static/js/reports.js) #}
+    <a class="btn btn-sm btn-outline-secondary" href="{% querystring print=1 page=None %}">🖨 {% translate "Print" %}</a>
+  </div>
+</div>
+
+{% include "reports/includes/period_filter.html" %}
+{% block filters %}{% endblock %}
+{% include "reports/includes/tiles.html" %}
+
+{% if charts.main %}
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      {% include "reports/includes/chart.html" with name="main" spec=charts.main label=title %}
+    </div>
+  </div>
+{% endif %}
+
+{% block before_table %}{% endblock %}
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    {% include "reports/includes/table.html" %}
+    {% if note %}<p class="small text-body-secondary mt-3 mb-0">{{ note }}</p>{% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {% include "reports/includes/chart_scripts.html" %}
+{% endblock %}

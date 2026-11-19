@@ -1,0 +1,41 @@
+{% load i18n %}
+{# The period of the page: buttons 7 / 30 / 90 days or two dates. #}
+{# Everything goes into the URL query, so the page can be bookmarked #}
+{# and the CSV / XLSX exports get the same filters. #}
+<div class="card shadow-sm mb-4 d-print-none">
+  <div class="card-body d-flex flex-wrap gap-3 align-items-end">
+    <div class="btn-group" role="group" aria-label="{% translate 'Period' %}">
+      {% for days in presets %}
+        <a class="btn btn-sm btn-outline-primary{% if period.preset == days %} active{% endif %}"
+           {% if period.preset == days %}aria-current="true"{% endif %}
+           href="{% querystring period=days from=None to=None page=None print=None %}">
+          {% blocktranslate count days=days %}{{ days }} day{% plural %}{{ days }} days{% endblocktranslate %}
+        </a>
+      {% endfor %}
+    </div>
+
+    <form method="get" class="d-flex flex-wrap gap-2 align-items-end">
+      {# Keep the other filters of the page when the dates change #}
+      {% if request.GET.group %}<input type="hidden" name="group" value="{{ request.GET.group }}">{% endif %}
+      {% if request.GET.sort %}<input type="hidden" name="sort" value="{{ request.GET.sort }}">{% endif %}
+      <div>
+        <label for="period-from" class="form-label small mb-1">{% translate "From" %}</label>
+        <input type="date" id="period-from" name="from" class="form-control form-control-sm"
+               value="{{ period.first|date:'Y-m-d' }}" required>
+      </div>
+      <div>
+        <label for="period-to" class="form-label small mb-1">{% translate "To" %}</label>
+        <input type="date" id="period-to" name="to" class="form-control form-control-sm"
+               value="{{ period.last|date:'Y-m-d' }}" required>
+      </div>
+      <button type="submit" class="btn btn-sm btn-primary">{% translate "Show" %}</button>
+    </form>
+
+    <div class="ms-lg-auto small text-body-secondary">
+      {{ period.first|date:"SHORT_DATE_FORMAT" }} – {{ period.last|date:"SHORT_DATE_FORMAT" }}
+      <br>
+      {% translate "compared with" %}
+      {{ period.previous.first|date:"SHORT_DATE_FORMAT" }} – {{ period.previous.last|date:"SHORT_DATE_FORMAT" }}
+    </div>
+  </div>
+</div>

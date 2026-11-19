@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n report_tags %}
+
+{% block title %}{% translate "Events" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-start gap-2 mb-3">
+  <div class="me-auto">
+    <h1 class="h3 mb-1">{% translate "Events" %}</h1>
+    <p class="text-body-secondary mb-0">
+      {% translate "Every event that came from the bookstore, newest first." %}
+    </p>
+  </div>
+  <a class="btn btn-sm btn-outline-secondary" href="{{ admin_url }}">{% translate "Open in the admin" %}</a>
+</div>
+
+{% if failed_count %}
+  <div class="alert alert-warning">
+    {% blocktranslate count counter=failed_count %}{{ counter }} event failed: its message is in the dead letter queue.{% plural %}{{ counter }} events failed: their messages are in the dead letter queue.{% endblocktranslate %}
+    <a href="?status=failed" class="alert-link">{% translate "Show" %}</a>
+  </div>
+{% endif %}
+
+<form method="get" class="card shadow-sm mb-4">
+  <div class="card-body d-flex flex-wrap gap-2 align-items-end">
+    <div>
+      <label for="filter-status" class="form-label small mb-1">{% translate "Status" %}</label>
+      <select id="filter-status" name="status" class="form-select form-select-sm">
+        <option value="">{% translate "All" %}</option>
+        {% for value, label in statuses %}
+          <option value="{{ value }}"{% if request.GET.status == value %} selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="filter-type" class="form-label small mb-1">{% translate "Type" %}</label>
+      <select id="filter-type" name="type" class="form-select form-select-sm">
+        <option value="">{% translate "All" %}</option>
+        {% for value, label in types %}
+          <option value="{{ value }}"{% if request.GET.type == value %} selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-sm btn-primary">{% translate "Show" %}</button>
+    <a href="{% url 'reports:events' %}" class="btn btn-sm btn-link">{% translate "Reset" %}</a>
+  </div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col">{% translate "Received" %}</th>
+            <th scope="col">{% translate "Type" %}</th>
+            <th scope="col">{% translate "Order" %}</th>
+            <th scope="col">{% translate "Status" %}</th>
+            <th scope="col">{% translate "Event id" %}</th>
+            <th scope="col">{% translate "Error" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for event in object_list %}
+            <tr>
+              <td class="text-nowrap">{{ event.received_at|kyiv }}</td>
+              <td>{{ event.get_type_display|default:"—" }}</td>
+              <td>{% if event.payload.order %}#{{ event.payload.order.id }}{% else %}—{% endif %}</td>
+              <td>
+                <span class="badge {% if event.status == 'failed' %}text-bg-danger{% else %}text-bg-success{% endif %}">
+                  {{ event.get_status_display }}
+                </span>
+              </td>
+              <td><code class="small">{{ event.event_id }}</code></td>
+              <td class="small text-danger">{{ event.error|truncatechars:120 }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6" class="text-center text-body-secondary py-4">{% translate "No events found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "reports/includes/pagination.html" %}
+  </div>
+</div>
+{% endblock %}

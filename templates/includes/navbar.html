@@ -10,11 +10,34 @@
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav me-auto">
         {% if perms.users.view_analytics %}
-          {# The report pages join this menu at stage 4 #}
-          <li class="nav-item">
-            <a class="nav-link{% if request.resolver_match.url_name == 'dashboard' %} active" aria-current="page{% endif %}"
-               href="{% url 'reports:dashboard' %}">{% translate "Dashboard" %}</a>
-          </li>
+          {% with current=request.resolver_match.url_name %}
+            <li class="nav-item">
+              <a class="nav-link{% if current == 'dashboard' %} active" aria-current="page{% endif %}"
+                 href="{% url 'reports:dashboard' %}">{% translate "Dashboard" %}</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle{% if current in 'sales books book formats categories customers cancellations' %} active{% endif %}"
+                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{% translate "Reports" %}</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'reports:sales' %}">{% translate "Sales" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'reports:books' %}">{% translate "Books" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'reports:formats' %}">{% translate "Formats" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'reports:categories' %}">{% translate "Categories" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'reports:customers' %}">{% translate "Customers" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'reports:cancellations' %}">{% translate "Cancellations" %}</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link{% if current == 'orders' %} active" aria-current="page{% endif %}"
+                 href="{% url 'reports:orders' %}">{% translate "Orders" %}</a>
+            </li>
+            {% if perms.events.view_event %}
+              <li class="nav-item">
+                <a class="nav-link{% if current == 'events' %} active" aria-current="page{% endif %}"
+                   href="{% url 'reports:events' %}">{% translate "Events" %}</a>
+              </li>
+            {% endif %}
+          {% endwith %}
         {% endif %}
         {% if user.is_staff %}
           <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">{% translate "Admin" %}</a></li>

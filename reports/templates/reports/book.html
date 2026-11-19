@@ -1,0 +1,55 @@
+{% extends "reports/report.html" %}
+{% load i18n report_tags %}
+
+{% block heading %}
+  <nav aria-label="breadcrumb" class="d-print-none">
+    <ol class="breadcrumb small mb-1">
+      <li class="breadcrumb-item"><a href="{% url 'reports:books' %}?{{ period_query }}">{% translate "Books" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ book.title }}</li>
+    </ol>
+  </nav>
+  <h1 class="h3 mb-1">{{ book.title }}</h1>
+  <p class="text-body-secondary mb-0">
+    {{ book.author }}{% if book.publisher %} · {{ book.publisher }}{% endif %}
+    {% for category in book.categories.all %}
+      <span class="badge text-bg-light border">{{ category.name }}</span>
+    {% endfor %}
+  </p>
+{% endblock %}
+
+{% block before_table %}
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5">{% translate "Formats" %}</h2>
+    <div class="row align-items-center">
+      <div class="col-md-5">
+        {% if charts.formats.labels %}
+          {% include "reports/includes/chart.html" with name="formats" spec=charts.formats label=_("Formats") small=True %}
+        {% endif %}
+      </div>
+      <div class="col-md-7">
+        <table class="table table-sm mb-0">
+          <thead>
+            <tr>
+              <th scope="col">{% translate "Format" %}</th>
+              <th scope="col" class="text-end">{% translate "Copies" %}</th>
+              <th scope="col" class="text-end">{% translate "Revenue, UAH" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in format_rows %}
+              <tr>
+                <td>{{ row.format_type|format_value:"format" }}</td>
+                <td class="text-end">{{ row.quantity|format_value:"int" }}</td>
+                <td class="text-end">{{ row.revenue_uah|money }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="3" class="text-body-secondary">{% translate "No sales in this period." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

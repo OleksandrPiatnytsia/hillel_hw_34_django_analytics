@@ -4,17 +4,61 @@
 {% block title %}{% translate "Dashboard" %}{% endblock %}
 
 {% block content %}
-<h1 class="h3 mb-4">{% translate "Dashboard" %}</h1>
+<h1 class="h3 mb-3">{% translate "Dashboard" %}</h1>
 
-{# A placeholder until the events arrive (stages 2-4): the KPI tiles and #}
-{# the Chart.js charts take this place #}
-<div class="card shadow-sm">
-  <div class="card-body text-center py-5">
-    <div class="display-4 mb-3">📈</div>
-    <h2 class="h5">{% translate "No data yet" %}</h2>
-    <p class="text-body-secondary mb-0">
-      {% translate "Sales figures will appear here once the bookstore starts sending its order events." %}
-    </p>
+{% if not has_data %}
+  {# No day computed yet: the bookstore hasn't sent orders, or the first #}
+  {# recalculation (every 10 minutes) hasn't run #}
+  <div class="card shadow-sm">
+    <div class="card-body text-center py-5">
+      <div class="display-4 mb-3">📈</div>
+      <h2 class="h5">{% translate "No data yet" %}</h2>
+      <p class="text-body-secondary mb-0">
+        {% translate "Sales figures will appear here once the bookstore starts sending its order events." %}
+      </p>
+    </div>
   </div>
-</div>
+{% else %}
+  {% include "reports/includes/period_filter.html" %}
+  {% include "reports/includes/tiles.html" %}
+
+  <div class="row g-4">
+    <div class="col-12">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6"><a href="{% url 'reports:sales' %}?{{ period_query }}">{% translate "Revenue by day" %}</a></h2>
+          {% include "reports/includes/chart.html" with name="revenue" spec=charts.revenue label=_("Revenue by day") %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6"><a href="{% url 'reports:books' %}?{{ period_query }}">{% translate "Top 10 books" %}</a></h2>
+          {% include "reports/includes/chart.html" with name="books" spec=charts.books label=_("Top 10 books") %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6"><a href="{% url 'reports:formats' %}?{{ period_query }}">{% translate "Formats" %}</a></h2>
+          {% include "reports/includes/chart.html" with name="formats" spec=charts.formats label=_("Formats") %}
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6"><a href="{% url 'reports:categories' %}?{{ period_query }}">{% translate "Categories" %}</a></h2>
+          {% include "reports/includes/chart.html" with name="categories" spec=charts.categories label=_("Categories") %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+  {% if has_data %}{% include "reports/includes/chart_scripts.html" %}{% endif %}
 {% endblock %}

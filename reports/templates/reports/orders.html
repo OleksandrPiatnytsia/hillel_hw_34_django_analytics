@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n report_tags %}
+
+{% block title %}{% translate "Orders" %}{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-1">{% translate "Orders" %}</h1>
+<p class="text-body-secondary">
+  {% translate "The orders as the bookstore's events described them. No personal data: a customer is an anonymous key." %}
+</p>
+
+<form method="get" class="card shadow-sm mb-4 d-print-none">
+  <div class="card-body d-flex flex-wrap gap-2 align-items-end">
+    <div>
+      <label for="filter-number" class="form-label small mb-1">{% translate "Order number" %}</label>
+      <input type="text" inputmode="numeric" id="filter-number" name="number" class="form-control form-control-sm"
+             value="{{ request.GET.number }}">
+    </div>
+    <div>
+      <label for="filter-status" class="form-label small mb-1">{% translate "Status" %}</label>
+      <select id="filter-status" name="status" class="form-select form-select-sm">
+        <option value="">{% translate "All" %}</option>
+        {% for value, label in statuses %}
+          <option value="{{ value }}"{% if request.GET.status == value %} selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="filter-payment" class="form-label small mb-1">{% translate "Payment" %}</label>
+      <select id="filter-payment" name="payment" class="form-select form-select-sm">
+        <option value="">{% translate "All" %}</option>
+        {% for value, label in payments %}
+          <option value="{{ value }}"{% if request.GET.payment == value %} selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-sm btn-primary">{% translate "Show" %}</button>
+    <a href="{% url 'reports:orders' %}" class="btn btn-sm btn-link">{% translate "Reset" %}</a>
+  </div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col">{% translate "Order" %}</th>
+            <th scope="col">{% translate "Created" %}</th>
+            <th scope="col">{% translate "Status" %}</th>
+            <th scope="col">{% translate "Payment" %}</th>
+            <th scope="col" class="text-end">{% translate "Copies" %}</th>
+            <th scope="col" class="text-end">{% translate "Total" %}</th>
+            <th scope="col" class="text-end">{% translate "Total, UAH" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in object_list %}
+            <tr>
+              <td>#{{ order.source_id }}</td>
+              <td class="text-nowrap">{{ order.created_at|kyiv }}</td>
+              <td>
+                <span class="badge {% if order.status == 'cancelled' %}text-bg-danger{% elif order.status == 'completed' %}text-bg-success{% else %}text-bg-secondary{% endif %}">
+                  {{ order.get_status_display }}
+                </span>
+              </td>
+              <td>{{ order.get_payment_status_display }}</td>
+              <td class="text-end">{{ order.items|default:0 }}</td>
+              <td class="text-end text-nowrap">{{ order.total|money }} {{ order.currency }}</td>
+              <td class="text-end text-nowrap">{{ order.total_uah|money }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="7" class="text-center text-body-secondary py-4">{% translate "No orders found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "reports/includes/pagination.html" %}
+  </div>
+</div>
+{% endblock %}
