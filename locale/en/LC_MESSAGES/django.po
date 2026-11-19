@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 18:46+0000\n"
+"POT-Creation-Date: 2026-11-19 16:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: English\n"
@@ -54,11 +54,11 @@ msgstr ""
 msgid "language"
 msgstr ""
 
-#: catalog/models.py:41
+#: catalog/models.py:41 reports/models.py:48
 msgid "updated at"
 msgstr ""
 
-#: catalog/models.py:44 sales/models.py:72
+#: catalog/models.py:44 reports/models.py:69 sales/models.py:72
 msgid "book"
 msgstr ""
 
@@ -66,11 +66,11 @@ msgstr ""
 msgid "books"
 msgstr ""
 
-#: config/settings/base.py:284
+#: config/settings/base.py:295
 msgid "Ukrainian"
 msgstr ""
 
-#: config/settings/base.py:285
+#: config/settings/base.py:296
 msgid "English"
 msgstr ""
 
@@ -142,8 +142,75 @@ msgstr ""
 msgid "Reports"
 msgstr ""
 
-#: reports/templates/reports/dashboard.html:4
-#: reports/templates/reports/dashboard.html:7 templates/includes/navbar.html:16
+#: reports/models.py:26 reports/models.py:66 reports/models.py:100
+msgid "day"
+msgstr ""
+
+#: reports/models.py:28 sales/models.py:54
+msgid "orders"
+msgstr ""
+
+#: reports/models.py:29
+msgid "paid orders"
+msgstr ""
+
+#: reports/models.py:30
+msgid "cancelled orders"
+msgstr ""
+
+#: reports/models.py:32 reports/models.py:73
+msgid "revenue, UAH"
+msgstr ""
+
+#: reports/models.py:35
+msgid "paid revenue, UAH"
+msgstr ""
+
+#: reports/models.py:38
+msgid "items sold"
+msgstr ""
+
+#: reports/models.py:41
+msgid "average order, UAH"
+msgstr ""
+
+#: reports/models.py:44
+msgid "new customers"
+msgstr ""
+
+#: reports/models.py:46
+msgid "returning customers"
+msgstr ""
+
+#: reports/models.py:51 reports/models.py:52
+msgid "daily sales"
+msgstr ""
+
+#: reports/models.py:71 sales/models.py:74
+msgid "format"
+msgstr ""
+
+#: reports/models.py:72 sales/models.py:75
+msgid "quantity"
+msgstr ""
+
+#: reports/models.py:76 reports/models.py:77
+msgid "daily book sales"
+msgstr ""
+
+#: reports/models.py:101
+msgid "marked at"
+msgstr ""
+
+#: reports/models.py:104
+msgid "day to recalculate"
+msgstr ""
+
+#: reports/models.py:105
+msgid "days to recalculate"
+msgstr ""
+
+#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 templates/includes/navbar.html:16
 msgid "Dashboard"
 msgstr ""
 
@@ -152,9 +219,7 @@ msgid "No data yet"
 msgstr ""
 
 #: reports/templates/reports/dashboard.html:16
-msgid ""
-"Sales figures will appear here once the bookstore starts sending its order "
-"events."
+msgid "Sales figures will appear here once the bookstore starts sending its order events."
 msgstr ""
 
 #: sales/apps.py:8
@@ -233,10 +298,6 @@ msgstr ""
 msgid "order"
 msgstr ""
 
-#: sales/models.py:54
-msgid "orders"
-msgstr ""
-
 #: sales/models.py:63
 msgid "Paper"
 msgstr ""
@@ -247,14 +308,6 @@ msgstr ""
 
 #: sales/models.py:65
 msgid "Audiobook"
-msgstr ""
-
-#: sales/models.py:74
-msgid "format"
-msgstr ""
-
-#: sales/models.py:75
-msgid "quantity"
 msgstr ""
 
 #: sales/models.py:77
@@ -278,9 +331,7 @@ msgid "Access denied"
 msgstr ""
 
 #: templates/403.html:15
-msgid ""
-"You don't have permission to open this page. Ask the administrator to add "
-"you to the Analysts group."
+msgid "You don't have permission to open this page. Ask the administrator to add you to the Analysts group."
 msgstr ""
 
 #: templates/403.html:16 templates/404.html:16 templates/500.html:42
@@ -355,8 +406,7 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: templates/includes/navbar.html:59 users/templates/users/login.html:4
-#: users/templates/users/login.html:11 users/templates/users/login.html:39
+#: templates/includes/navbar.html:59 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
 msgid "Log in"
 msgstr ""
 

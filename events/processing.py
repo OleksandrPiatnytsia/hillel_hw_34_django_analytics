@@ -2,6 +2,7 @@
 
     raw body (bytes) --JSON--> dict --contract--> validated event
         --transaction--> Event row + Book / Category / Order / OrderLine
+                         + DirtyDay (the order's day must be recalculated)
 
 The consumer (events/consumer.py) acknowledges the message only after this
 function has returned, i.e. after the COMMIT: a crash between the two means
@@ -17,6 +18,7 @@ from django.db import transaction
 from django.utils import timezone
 from rest_framework import serializers
 
+from reports.aggregation import mark_dirty
 from sales.services import apply_order_event
 
 from .contract import validate_event
@@ -111,6 +113,10 @@ def process_event(event):
             return Outcome.DUPLICATE
 
         order = apply_order_event(event["type"], event["occurred_at"], event["order"])
+        # The totals of the order's day are out of date now; the periodic
+        # task recalculates the day (reports/tasks.py). In this transaction:
+        # no mark without the change, no change without the mark.
+        mark_dirty(order.created_at)
 
         # A FAILED row (an older broken copy, replayed after a fix) becomes
         # PROCESSED; otherwise a new row

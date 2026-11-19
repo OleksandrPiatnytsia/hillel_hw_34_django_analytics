@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 18:46+0000\n"
+"POT-Creation-Date: 2026-11-19 16:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Analytics\n"
 "Language-Team: Ukrainian\n"
@@ -51,15 +51,14 @@ msgid "publisher"
 msgstr "видавництво"
 
 #: catalog/models.py:36
-#| msgid "Language"
 msgid "language"
 msgstr "мова"
 
-#: catalog/models.py:41
+#: catalog/models.py:41 reports/models.py:48
 msgid "updated at"
 msgstr "оновлено"
 
-#: catalog/models.py:44 sales/models.py:72
+#: catalog/models.py:44 reports/models.py:69 sales/models.py:72
 msgid "book"
 msgstr "книга"
 
@@ -67,11 +66,11 @@ msgstr "книга"
 msgid "books"
 msgstr "книги"
 
-#: config/settings/base.py:284
+#: config/settings/base.py:295
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: config/settings/base.py:285
+#: config/settings/base.py:296
 msgid "English"
 msgstr "Англійська"
 
@@ -143,9 +142,75 @@ msgstr "події"
 msgid "Reports"
 msgstr "Звіти"
 
-#: reports/templates/reports/dashboard.html:4
-#: reports/templates/reports/dashboard.html:7
-#: templates/includes/navbar.html:16
+#: reports/models.py:26 reports/models.py:66 reports/models.py:100
+msgid "day"
+msgstr "день"
+
+#: reports/models.py:28 sales/models.py:54
+msgid "orders"
+msgstr "замовлення"
+
+#: reports/models.py:29
+msgid "paid orders"
+msgstr "оплачені замовлення"
+
+#: reports/models.py:30
+msgid "cancelled orders"
+msgstr "скасовані замовлення"
+
+#: reports/models.py:32 reports/models.py:73
+msgid "revenue, UAH"
+msgstr "виручка, грн"
+
+#: reports/models.py:35
+msgid "paid revenue, UAH"
+msgstr "оплачена виручка, грн"
+
+#: reports/models.py:38
+msgid "items sold"
+msgstr "продано примірників"
+
+#: reports/models.py:41
+msgid "average order, UAH"
+msgstr "середнє замовлення, грн"
+
+#: reports/models.py:44
+msgid "new customers"
+msgstr "нові покупці"
+
+#: reports/models.py:46
+msgid "returning customers"
+msgstr "повторні покупці"
+
+#: reports/models.py:51 reports/models.py:52
+msgid "daily sales"
+msgstr "продажі за день"
+
+#: reports/models.py:71 sales/models.py:74
+msgid "format"
+msgstr "формат"
+
+#: reports/models.py:72 sales/models.py:75
+msgid "quantity"
+msgstr "кількість"
+
+#: reports/models.py:76 reports/models.py:77
+msgid "daily book sales"
+msgstr "продажі книг за день"
+
+#: reports/models.py:101
+msgid "marked at"
+msgstr "позначено"
+
+#: reports/models.py:104
+msgid "day to recalculate"
+msgstr "день для перерахунку"
+
+#: reports/models.py:105
+msgid "days to recalculate"
+msgstr "дні для перерахунку"
+
+#: reports/templates/reports/dashboard.html:4 reports/templates/reports/dashboard.html:7 templates/includes/navbar.html:16
 msgid "Dashboard"
 msgstr "Дашборд"
 
@@ -154,12 +219,8 @@ msgid "No data yet"
 msgstr "Даних поки немає"
 
 #: reports/templates/reports/dashboard.html:16
-msgid ""
-"Sales figures will appear here once the bookstore starts sending its order "
-"events."
-msgstr ""
-"Показники продажів з'являться тут, щойно книгарня почне надсилати події "
-"замовлень."
+msgid "Sales figures will appear here once the bookstore starts sending its order events."
+msgstr "Показники продажів з'являться тут, щойно книгарня почне надсилати події замовлень."
 
 #: sales/apps.py:8
 msgid "Sales"
@@ -237,10 +298,6 @@ msgstr "остання подія о"
 msgid "order"
 msgstr "замовлення"
 
-#: sales/models.py:54
-msgid "orders"
-msgstr "замовлення"
-
 #: sales/models.py:63
 msgid "Paper"
 msgstr "Паперова"
@@ -252,14 +309,6 @@ msgstr "Електронна"
 #: sales/models.py:65
 msgid "Audiobook"
 msgstr "Аудіокнига"
-
-#: sales/models.py:74
-msgid "format"
-msgstr "формат"
-
-#: sales/models.py:75
-msgid "quantity"
-msgstr "кількість"
 
 #: sales/models.py:77
 msgid "price"
@@ -282,12 +331,8 @@ msgid "Access denied"
 msgstr "Доступ заборонено"
 
 #: templates/403.html:15
-msgid ""
-"You don't have permission to open this page. Ask the administrator to add "
-"you to the Analysts group."
-msgstr ""
-"У вас немає прав на цю сторінку. Попросіть адміністратора додати вас до "
-"групи Analysts."
+msgid "You don't have permission to open this page. Ask the administrator to add you to the Analysts group."
+msgstr "У вас немає прав на цю сторінку. Попросіть адміністратора додати вас до групи Analysts."
 
 #: templates/403.html:16 templates/404.html:16 templates/500.html:42
 msgid "Back to the dashboard"
@@ -361,8 +406,7 @@ msgstr "Мова"
 msgid "Log out"
 msgstr "Вийти"
 
-#: templates/includes/navbar.html:59 users/templates/users/login.html:4
-#: users/templates/users/login.html:11 users/templates/users/login.html:39
+#: templates/includes/navbar.html:59 users/templates/users/login.html:4 users/templates/users/login.html:11 users/templates/users/login.html:39
 msgid "Log in"
 msgstr "Увійти"
 

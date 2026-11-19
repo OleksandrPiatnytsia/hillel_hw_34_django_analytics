@@ -119,7 +119,21 @@ Interface: Django templates + Bootstrap 5 + **Chart.js** (CDN, no frontend build
    known only to A. A's part (rabbitmq service + network name bookstore_net) is a separate
    task in A's session.
 3. A: outbox + Celery publisher with publisher confirms (in A's repository).
-4. B: aggregation, reports, dashboard, exports, REST + Swagger.
+4. B: aggregation, reports, dashboard, exports, REST + Swagger. Sub-steps: 4.1 aggregation +
+   Celery + cache, 4.2 web reports + dashboard, 4.3 CSV / XLSX exports, 4.4 REST + Swagger,
+   4.5 daily email to Analysts + i18n + tests. Decisions (user, 2026-11-19, all as recommended):
+   a report day = a calendar day in Europe/Kyiv (REPORTS_TIME_ZONE, reports/days.py; the
+   database stays UTC); an order counts on the day it was CREATED, its payment and
+   cancellation too; revenue = orders not cancelled, paid revenue is its own column;
+   changed days are recalculated through `reports.DirtyDay` marks written in the event's
+   transaction (a database table instead of the planned Redis set: atomic with the change,
+   no Redis in tests), beat `refresh_reports` every 10 min = marks + today, `close_yesterday`
+   at 01:00 UTC; cache of answers = version key `reports:version` bumped after every
+   recalculation (reports/cache.py); export files stored in the database (BinaryField with a
+   size limit: Railway web and worker share no disk); categories: a book counts in each of
+   its categories, a note under the table says the sum exceeds the total.
+   4.1 code written 2026-11-19 (reports/models.py, aggregation.py, cache.py, tasks.py,
+   command rebuild_reports).
 5. A: analytics page via B's REST + backfill; integration tests on both sides.
 6. CI/CD, Railway deploy, README with the architecture diagram, Swagger.
 

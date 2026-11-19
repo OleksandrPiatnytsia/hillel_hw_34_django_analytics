@@ -7,6 +7,9 @@ psycopg[binary]==3.3.8
 # Pool of database connections (DATABASES OPTIONS "pool" in config/settings/base.py)
 psycopg-pool==3.3.3
 python-dotenv==1.2.4
+# Time zone data for zoneinfo (the Kyiv day of the reports, reports/days.py):
+# the slim Docker image may come without the system zone files
+tzdata==2026.6
 # Cache, sessions and the Celery broker
 redis==8.1.0
 # gunicorn as the process manager + uvicorn workers = an ASGI server (gunicorn.conf.py)

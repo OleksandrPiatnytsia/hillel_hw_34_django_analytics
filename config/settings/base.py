@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     "catalog",
     # Orders and their lines, as the events describe them
     "sales",
-    # The dashboard now; the report tables and pages come at stage 4
+    # Daily totals (aggregation, Celery beat), the dashboard and the reports
     "reports",
 ]
 
@@ -232,6 +232,17 @@ CELERY_BEAT_SCHEDULE = {
         "task": "users.tasks.clear_expired_sessions",
         "schedule": crontab(hour=3, minute=0),
     },
+    # The report totals of today + of the days marked by new events
+    "refresh-reports": {
+        "task": "reports.tasks.refresh_reports",
+        "schedule": crontab(minute="*/10"),
+    },
+    # Yesterday (a Kyiv day) once more, at 01:00 UTC = 03:00 / 04:00 in Kyiv,
+    # well after its midnight in both winter and summer time
+    "close-yesterday": {
+        "task": "reports.tasks.close_yesterday",
+        "schedule": crontab(hour=1, minute=0),
+    },
 }
 
 
@@ -293,6 +304,10 @@ LANGUAGE_COOKIE_AGE = 365 * 24 * 60 * 60
 # UTC, the same as the bookstore: the times in the events and in the
 # reports are compared without conversions
 TIME_ZONE = "UTC"
+# The calendar day of the reports: the shop and its managers are in Kyiv.
+# The database stays in UTC; only the cut between days follows this zone
+# (reports/days.py).
+REPORTS_TIME_ZONE = "Europe/Kyiv"
 CELERY_TIMEZONE = TIME_ZONE
 
 USE_I18N = True
